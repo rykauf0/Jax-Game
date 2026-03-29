@@ -43,26 +43,26 @@ export default function ActionCard({ card, canAfford, onPlay }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '1px',
-        padding: '8px 6px 6px',
-        borderRadius: '16px',
+        gap: '3px',
+        padding: '10px 8px 8px',
+        borderRadius: '18px',
         border: `2.5px solid ${canAfford ? style.border : '#D1D5DB'}`,
         background: canAfford ? style.bg : 'linear-gradient(145deg, #F9FAFB, #F3F4F6)',
-        opacity: canAfford ? 1 : 0.45,
+        opacity: canAfford ? 1 : 0.4,
         cursor: canAfford ? 'pointer' : 'not-allowed',
         boxShadow: canAfford
-          ? (pressed ? '0 1px 2px rgba(0,0,0,0.1)' : `${style.glow}, 0 4px 0 ${canAfford ? style.border : '#D1D5DB'}`)
+          ? (pressed ? '0 1px 2px rgba(0,0,0,0.1)' : `${style.glow}, 0 5px 0 ${style.border}`)
           : '0 2px 0 #D1D5DB',
-        transform: pressed ? 'translateY(3px) scale(0.96)' : 'translateY(0) scale(1)',
+        transform: pressed ? 'translateY(4px) scale(0.96)' : 'translateY(0) scale(1)',
         transition: 'transform 0.1s, box-shadow 0.1s',
-        flex: '1 1 0',
-        minWidth: 0,
-        maxWidth: '115px',
+        width: '100%',
+        minHeight: '100px',
         fontFamily: "'Nunito', sans-serif",
         position: 'relative',
         overflow: 'hidden',
         WebkitTapHighlightColor: 'transparent',
         outline: 'none',
+        touchAction: 'manipulation',
       }}
     >
       {/* Rare shimmer */}
@@ -78,47 +78,50 @@ export default function ActionCard({ card, canAfford, onPlay }) {
       {/* Rarity badge */}
       {style.badge && canAfford && (
         <div style={{
-          position: 'absolute', top: '3px', right: '3px',
-          width: '7px', height: '7px', borderRadius: '50%',
+          position: 'absolute', top: '4px', right: '4px',
+          width: '8px', height: '8px', borderRadius: '50%',
           background: style.badge,
-          boxShadow: `0 0 4px ${style.badge}`,
+          boxShadow: `0 0 6px ${style.badge}`,
         }} />
       )}
 
-      {/* Icon */}
-      <span style={{ fontSize: '24px', lineHeight: 1, filter: canAfford ? 'none' : 'grayscale(0.7)' }}>
+      {/* Icon — BIG */}
+      <span style={{
+        fontSize: '32px', lineHeight: 1,
+        filter: canAfford ? 'drop-shadow(0 2px 3px rgba(0,0,0,0.1))' : 'grayscale(0.7)',
+      }}>
         {card.icon}
       </span>
 
-      {/* Name */}
+      {/* Name — bold and readable */}
       <span style={{
-        fontSize: '11px', fontWeight: 800, color: canAfford ? '#1F2937' : '#9CA3AF',
+        fontSize: '13px', fontWeight: 800, color: canAfford ? '#1F2937' : '#9CA3AF',
         textAlign: 'center', lineHeight: 1.15,
         fontFamily: "'Fredoka', 'Nunito', sans-serif",
       }}>
         {card.name}
       </span>
 
-      {/* Effect */}
+      {/* Effect description */}
       <span style={{
-        fontSize: '9px', color: canAfford ? '#6B7280' : '#9CA3AF',
+        fontSize: '10px', color: canAfford ? '#6B7280' : '#9CA3AF',
         lineHeight: 1.1, textAlign: 'center',
       }}>
         {card.effectDesc}
       </span>
 
-      {/* Cost pill */}
+      {/* Cost pill — larger */}
       <span style={{
         marginTop: '2px',
-        padding: '1px 8px',
+        padding: '2px 10px',
         borderRadius: '10px',
         background: canAfford ? 'linear-gradient(135deg, #FEF3C7, #FDE68A)' : '#E5E7EB',
-        fontSize: '11px',
+        fontSize: '13px',
         fontWeight: 800,
         color: canAfford ? '#B45309' : '#9CA3AF',
         fontFamily: "'Fredoka', 'Nunito', sans-serif",
-        display: 'flex', alignItems: 'center', gap: '2px',
-        border: `1px solid ${canAfford ? '#FCD34D' : '#D1D5DB'}`,
+        display: 'flex', alignItems: 'center', gap: '3px',
+        border: `1.5px solid ${canAfford ? '#FCD34D' : '#D1D5DB'}`,
       }}>
         {card.cost} ⭐
       </span>

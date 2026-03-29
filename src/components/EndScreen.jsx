@@ -49,7 +49,7 @@ export default function EndScreen({ state, onRestart }) {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center',
-      height: '100vh', padding: '12px 16px',
+      height: '100dvh', padding: '12px 16px',
       fontFamily: "'Fredoka', 'Nunito', sans-serif",
       background: isWin
         ? `linear-gradient(180deg, ${tier.color}44 0%, #F8FAFC 50%, #F0FDF4 100%)`

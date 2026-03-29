@@ -18,7 +18,7 @@ function Countdown({ onDone }) {
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      height: '100vh',
+      height: '100dvh',
       background: 'linear-gradient(180deg, #0F172A 0%, #1E3A5F 50%, #2563EB 100%)',
       fontFamily: "'Fredoka', 'Nunito', sans-serif",
     }}>
@@ -48,7 +48,7 @@ function Tutorial({ onDone }) {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      height: '100vh', background: 'linear-gradient(180deg, #EFF6FF, #DBEAFE)',
+      height: '100dvh', background: 'linear-gradient(180deg, #EFF6FF, #DBEAFE)',
       fontFamily: "'Fredoka', 'Nunito', sans-serif", padding: '24px',
     }}>
       <div key={slide} style={{
@@ -134,7 +134,7 @@ export default function App() {
   }, [state?.phase]);
 
   return (
-    <div style={{ maxWidth: '430px', margin: '0 auto', height: '100vh', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ maxWidth: '430px', margin: '0 auto', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
       {screen === 'title' && <TitleScreen onStart={handleStart} />}
       {screen === 'countdown' && <Countdown onDone={handleCountdownDone} />}
       {screen === 'tutorial' && <Tutorial onDone={handleTutorialDone} />}
