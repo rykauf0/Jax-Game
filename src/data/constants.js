@@ -49,7 +49,6 @@ export const END_YEAR = 2070;
 export const START_TEMP = 1.1;
 export const CUB_TURN = 4;
 export const CUB_BELLY_THRESHOLD = 40;
-export const MINI_GAME_CHANCE = 0.55;
 export const MINI_GAME_START_TURN = 2;
 export const MINI_GAME_DURATION = 10;
 
@@ -58,6 +57,14 @@ export const TEMP_LABELS = [
   { max: 2.0, label: 'Warm', iconType: 'thermometer', color: '#FBBF24' },
   { max: 2.5, label: 'Hot', iconType: 'thermometer', color: '#F97316' },
   { max: Infinity, label: 'Danger!', iconType: 'sun', color: '#EF4444' },
+];
+
+export const BELLY_LABELS = [
+  { min: 80, label: 'Full!', fish: 5, color: '#22C55E' },
+  { min: 60, label: 'Happy', fish: 4, color: '#4ADE80' },
+  { min: 40, label: 'Hungry', fish: 3, color: '#FBBF24' },
+  { min: 20, label: 'Starving!', fish: 2, color: '#F97316' },
+  { min: 0, label: 'Danger!', fish: 1, color: '#EF4444' },
 ];
 
 export const SCORE_TIERS = [

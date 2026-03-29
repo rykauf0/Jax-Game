@@ -2,7 +2,7 @@ export const CARDS = [
   // FOOD CARDS
   {
     id: 'snacks',
-    name: 'Feed Aka!',
+    name: 'Feed Aka',
     cost: 2,
     rarity: 'common',
     iconType: 'fish',
@@ -12,7 +12,7 @@ export const CARDS = [
   },
   {
     id: 'seals',
-    name: 'Find Seals!',
+    name: 'Find Seals',
     cost: 3,
     rarity: 'common',
     iconType: 'seal',
@@ -22,7 +22,7 @@ export const CARDS = [
   },
   {
     id: 'fish_farm',
-    name: 'Fish Farm!',
+    name: 'Fish Farm',
     cost: 4,
     rarity: 'uncommon',
     iconType: 'fish',
@@ -34,7 +34,7 @@ export const CARDS = [
   // CLEAN ENERGY CARDS
   {
     id: 'windmill',
-    name: 'Wind Farm!',
+    name: 'Wind Power',
     cost: 5,
     rarity: 'common',
     iconType: 'wind',
@@ -44,7 +44,7 @@ export const CARDS = [
   },
   {
     id: 'solar',
-    name: 'Solar Panels!',
+    name: 'Solar Power',
     cost: 4,
     rarity: 'common',
     iconType: 'solar',
@@ -54,7 +54,7 @@ export const CARDS = [
   },
   {
     id: 'ocean',
-    name: 'Ocean Cleanup!',
+    name: 'Clean Ocean',
     cost: 5,
     rarity: 'uncommon',
     iconType: 'wave',
@@ -64,7 +64,7 @@ export const CARDS = [
   },
   {
     id: 'carbon',
-    name: 'CO2 Cleaner!',
+    name: 'Air Cleaner',
     cost: 5,
     rarity: 'rare',
     iconType: 'factory',
@@ -76,7 +76,7 @@ export const CARDS = [
   // PROTECTION CARDS
   {
     id: 'ice_bridge',
-    name: 'Ice Bridge!',
+    name: 'Ice Bridge',
     cost: 2,
     rarity: 'common',
     iconType: 'ice',
@@ -86,7 +86,7 @@ export const CARDS = [
   },
   {
     id: 'sanctuary',
-    name: 'Safe Zone!',
+    name: 'Safe Zone',
     cost: 4,
     rarity: 'uncommon',
     iconType: 'shield',
@@ -96,7 +96,7 @@ export const CARDS = [
   },
   {
     id: 'den',
-    name: 'Bear Den!',
+    name: 'Bear Den',
     cost: 3,
     rarity: 'uncommon',
     iconType: 'home',
@@ -108,7 +108,7 @@ export const CARDS = [
   // SCIENCE & DIPLOMACY
   {
     id: 'research',
-    name: 'Study Climate!',
+    name: 'Study Climate',
     cost: 4,
     rarity: 'common',
     iconType: 'magnify',
@@ -118,7 +118,7 @@ export const CARDS = [
   },
   {
     id: 'rescue',
-    name: 'Rescue Team!',
+    name: 'Rescue Team',
     cost: 3,
     rarity: 'common',
     iconType: 'helicopter',
@@ -138,7 +138,7 @@ export const CARDS = [
   },
   {
     id: 'trees',
-    name: 'Plant Forest!',
+    name: 'Plant Trees',
     cost: 2,
     rarity: 'uncommon',
     iconType: 'tree',

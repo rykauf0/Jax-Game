@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { DIFFICULTY, INFRA_COOLING, TOTAL_TURNS, START_YEAR, YEARS_PER_TURN, START_TEMP, CUB_TURN, CUB_BELLY_THRESHOLD, MINI_GAME_CHANCE, MINI_GAME_START_TURN, SCORE_TIERS } from '../data/constants';
+import { DIFFICULTY, INFRA_COOLING, TOTAL_TURNS, START_YEAR, YEARS_PER_TURN, START_TEMP, CUB_TURN, CUB_BELLY_THRESHOLD, MINI_GAME_START_TURN, SCORE_TIERS } from '../data/constants';
 import { CARDS, RARITY_WEIGHTS } from '../data/cards';
 import { getRandomEvent } from '../data/events';
 
@@ -88,6 +88,7 @@ export function useGameState() {
       cardsPlayedThisTurn: [],
       pendingMiniGame: false,
       newFriend: null,
+      lastMiniGameType: null,
       newAchievements: [],
     });
   }, []);
@@ -225,13 +226,15 @@ export function useGameState() {
       if (!prev) return prev;
       const next = { ...prev, currentEvent: null };
 
-      // Check for mini-game
-      const guaranteedTurns = [3, 6, 9, 12];
-      const shouldMiniGame = guaranteedTurns.includes(prev.turn) || (prev.turn >= MINI_GAME_START_TURN && Math.random() < MINI_GAME_CHANCE);
-      if (shouldMiniGame) {
-        const types = ['fish', 'memory', 'snowflake'];
+      // Mini-games happen on turns 3, 6, 9, 12 — never same type twice
+      const miniGameTurns = [3, 6, 9, 12];
+      if (miniGameTurns.includes(prev.turn)) {
+        const allTypes = ['fish', 'memory', 'snowflake'];
+        const available = allTypes.filter(t => t !== prev.lastMiniGameType);
+        const chosen = available[Math.floor(Math.random() * available.length)];
         next.phase = 'miniGame';
-        next.miniGameType = types[Math.floor(Math.random() * types.length)];
+        next.miniGameType = chosen;
+        next.lastMiniGameType = chosen;
       } else {
         next.phase = 'cards';
         next.hand = dealCards();

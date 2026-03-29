@@ -9,7 +9,7 @@ import { audio, startBgMusic, stopBgMusic } from '../utils/audio';
 import {
   HeartIcon, StarIcon, CalendarIcon, SnowflakeIcon, ThermometerIcon, SunIcon,
   WindIcon, SolarIcon, WaveIcon, FactoryIcon, MagnifyIcon, ShieldIcon, HomeIcon,
-  TrophyIcon, BearIcon, SpeakerIcon, FRIEND_SVGS,
+  TrophyIcon, BearIcon, SpeakerIcon, FRIEND_SVGS, FishIcon,
 } from './Icons';
 
 function FriendBanner({ friendId, onDone }) {
@@ -315,75 +315,56 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
         <AkaSpeech state={state} />
       </div>
 
-      {/* ===== BELLY BAR + TEMP (combined compact row) ===== */}
+      {/* ===== FISH BELLY METER ===== */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: '6px',
-        padding: '4px 10px', background: 'white',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px',
+        padding: '6px 10px', background: 'white',
         borderBottom: '1px solid #E2E8F0', flexShrink: 0,
       }}>
-        <HeartIcon size={14} />
-        <div style={{
-          flex: 1, height: '12px', background: bellyBg, borderRadius: '6px',
-          overflow: 'hidden', border: `1.5px solid ${bellyColor}33`,
+        <span style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', fontFamily: "'Fredoka', sans-serif", marginRight: '4px' }}>Aka:</span>
+        {[1, 2, 3, 4, 5].map(i => {
+          const threshold = i * 20; // 20, 40, 60, 80, 100
+          const filled = state.belly >= threshold;
+          const partial = !filled && state.belly >= threshold - 20;
+          return (
+            <div key={i} style={{
+              opacity: filled ? 1 : partial ? 0.5 : 0.15,
+              transform: filled ? 'scale(1)' : 'scale(0.85)',
+              transition: 'all 0.3s ease',
+              filter: filled ? 'none' : 'grayscale(0.5)',
+              animation: state.belly < 25 && i <= 1 ? 'pulse-low 0.8s ease-in-out infinite' : 'none',
+            }}>
+              <FishIcon size={22} color={filled ? '#3B82F6' : partial ? '#93C5FD' : '#CBD5E1'} />
+            </div>
+          );
+        })}
+        <span style={{
+          fontSize: '13px', fontWeight: 800, marginLeft: '6px',
+          color: state.belly > 60 ? '#22C55E' : state.belly > 30 ? '#FBBF24' : '#EF4444',
+          fontFamily: "'Fredoka', sans-serif",
         }}>
-          <div style={{
-            height: '100%', width: `${state.belly}%`,
-            background: `linear-gradient(90deg, ${bellyColor}, ${bellyColor}CC)`,
-            borderRadius: '5px', transition: 'width 0.5s ease',
-            animation: state.belly < 25 ? 'pulse-low 0.8s ease-in-out infinite' : 'none',
-            position: 'relative',
-          }}>
-            <div style={{
-              position: 'absolute', top: '1px', left: '3px', right: '30%',
-              height: '3px', borderRadius: '2px',
-              background: 'rgba(255,255,255,0.4)',
-            }} />
-          </div>
-        </div>
-        <span style={{ fontSize: '12px', fontWeight: 800, color: bellyColor, fontFamily: "'Fredoka', sans-serif" }}>
-          {Math.round(state.belly)}%
+          {state.belly > 80 ? 'Full!' : state.belly > 60 ? 'Happy' : state.belly > 40 ? 'OK' : state.belly > 20 ? 'Hungry!' : 'Starving!'}
         </span>
-        <div style={{
-          fontSize: '11px', fontWeight: 700, color: tempInfo.color,
-          whiteSpace: 'nowrap', padding: '2px 6px', borderRadius: '8px',
-          background: `${tempInfo.color}15`, fontFamily: "'Fredoka', sans-serif",
-        }}>
-          {tempInfo.label}
-        </div>
       </div>
 
-      {/* ===== STATUS ROW (year, infra, score) ===== */}
+      {/* ===== SIMPLE STATUS ROW ===== */}
       <div style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '4px 10px', background: '#F8FAFC',
+        display: 'flex', justifyContent: 'space-around', alignItems: 'center',
+        padding: '5px 12px', background: '#F8FAFC',
         borderBottom: '1px solid #E2E8F0', flexShrink: 0,
-        fontSize: '12px', fontWeight: 700, gap: '6px',
       }}>
-        <span style={{ color: '#3B82F6', fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '3px' }}>
-          <CalendarIcon size={13} /> {year}
-        </span>
-        <span style={{ color: tempInfo.color, fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '3px' }}>
-          {state.temp < 1.8 ? <SnowflakeIcon size={14} /> : state.temp < 2.5 ? <WaveIcon size={14} color={tempInfo.color} /> : <SunIcon size={14} color="#EF4444" />}
-          {(+state.temp).toFixed(1)}°C
-        </span>
-        {/* Infra + shields */}
-        <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-          {Object.entries(INFRA_LABELS).map(([key, info]) => {
-            const IconMap = { wind: WindIcon, solar: SolarIcon, wave: WaveIcon, factory: FactoryIcon };
-            const IC = IconMap[info.iconType];
-            return state.infra[key] > 0 ? (
-              <span key={key} style={{ display: 'flex', alignItems: 'center', gap: '1px' }}>
-                {IC && <IC size={14} />}<span style={{ fontWeight: 800, fontSize: '11px', color: '#3B82F6', fontFamily: "'Fredoka', sans-serif" }}>{state.infra[key]}</span>
-              </span>
-            ) : null;
-          })}
-          {state.researchLevel > 0 && <span style={{ display: 'flex', alignItems: 'center', gap: '1px' }}><MagnifyIcon size={14} /><span style={{ fontWeight: 800, fontSize: '11px', color: '#8B5CF6' }}>{state.researchLevel}</span></span>}
-          {state.shield && <ShieldIcon size={14} color="#10B981" />}
-          {state.stormShield && <HomeIcon size={14} color="#92400E" />}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Fredoka', sans-serif" }}>
+          <CalendarIcon size={15} color="#3B82F6" />
+          <span style={{ fontSize: '14px', fontWeight: 800, color: '#3B82F6' }}>{year}</span>
         </div>
-        <span style={{ color: '#B45309', fontWeight: 800, fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '3px' }}>
-          <TrophyIcon size={14} /> {approxScore}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Fredoka', sans-serif" }}>
+          <ThermometerIcon size={15} color={tempInfo.color} />
+          <span style={{ fontSize: '14px', fontWeight: 800, color: tempInfo.color }}>{(+state.temp).toFixed(1)}°C</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontFamily: "'Fredoka', sans-serif" }}>
+          <TrophyIcon size={15} color="#F59E0B" />
+          <span style={{ fontSize: '14px', fontWeight: 800, color: '#B45309' }}>{approxScore}</span>
+        </div>
       </div>
 
       {/* ===== CARDS + JUMP BUTTON (together as one flex section) ===== */}

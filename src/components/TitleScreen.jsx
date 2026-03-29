@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { getHighScore, getAchievements } from '../utils/storage';
 import { ACHIEVEMENTS } from '../data/constants';
 import { audio } from '../utils/audio';
@@ -7,6 +7,20 @@ import { TrophyIcon, MedalIcon, StarIcon, SnowflakeIcon } from './Icons';
 export default function TitleScreen({ onStart }) {
   const highScore = getHighScore();
   const achievementCount = getAchievements().length;
+
+  const [factIndex, setFactIndex] = useState(0);
+  const funFacts = [
+    "Can you save the Arctic ice?",
+    "Polar bears are the biggest land hunters!",
+    "The Arctic is warming 3x faster!",
+    "Every action helps our planet!",
+    "Aka needs YOUR help!",
+  ];
+
+  useEffect(() => {
+    const t = setInterval(() => setFactIndex(i => (i + 1) % funFacts.length), 3500);
+    return () => clearInterval(t);
+  }, []);
 
   const handleStart = (diff) => {
     audio.init();
@@ -62,7 +76,7 @@ export default function TitleScreen({ onStart }) {
 
       {/* Bear */}
       <div style={{
-        animation: 'title-bear-bounce 3s ease-in-out infinite',
+        animation: 'title-bear-bounce 3s ease-in-out infinite, title-bear-wobble 4s ease-in-out infinite',
         filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.3))',
         marginBottom: '4px',
       }}>
@@ -102,6 +116,22 @@ export default function TitleScreen({ onStart }) {
         </svg>
       </div>
 
+      {/* Sparkles around bear */}
+      <div style={{ position: 'absolute', top: '28%', left: '35%', pointerEvents: 'none' }}>
+        {[0, 1, 2, 3].map(i => (
+          <div key={i} style={{
+            position: 'absolute',
+            left: `${[-20, 60, -10, 70][i]}px`,
+            top: `${[-10, -5, 40, 30][i]}px`,
+            width: '6px', height: '6px',
+            background: '#FBBF24',
+            borderRadius: '50%',
+            animation: `twinkle ${1.5 + i * 0.5}s ease-in-out infinite ${i * 0.4}s`,
+            boxShadow: '0 0 4px #FBBF24',
+          }} />
+        ))}
+      </div>
+
       {/* Title */}
       <h1 style={{
         fontSize: '32px', fontWeight: 700, margin: '0 0 2px 0',
@@ -115,6 +145,15 @@ export default function TitleScreen({ onStart }) {
         fontFamily: "'Nunito', sans-serif",
       }}>
         Protect Aka the polar bear!
+      </p>
+      <p key={factIndex} style={{
+        fontSize: '12px', opacity: 0.6, margin: '0 0 16px 0',
+        fontFamily: "'Nunito', sans-serif",
+        animation: 'fade-in 0.5s ease-out',
+        textAlign: 'center',
+        maxWidth: '240px',
+      }}>
+        {funFacts[factIndex]}
       </p>
 
       {/* High score + achievements */}
@@ -146,6 +185,14 @@ export default function TitleScreen({ onStart }) {
       )}
 
       {/* Difficulty buttons */}
+      <div style={{
+        fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.5)',
+        fontFamily: "'Fredoka', sans-serif",
+        animation: 'jump-pulse 1.5s ease-in-out infinite',
+        marginBottom: '4px',
+      }}>
+        Choose difficulty to play!
+      </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', maxWidth: '260px' }}>
         {difficulties.map(d => (
           <button key={d.key} onClick={() => handleStart(d.key)} style={{

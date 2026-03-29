@@ -50,10 +50,10 @@ function ExpandRing({ x, y, color }) {
   );
 }
 
-// SVG Fish — faces right, flipped when going left
+// SVG Fish — faces left by default (eye at left, tail at right), flip when going right
 function FishSVG({ goingLeft }) {
   return (
-    <svg width="44" height="28" viewBox="0 0 44 28" style={{ transform: goingLeft ? 'scaleX(-1)' : 'none' }}>
+    <svg width="44" height="28" viewBox="0 0 44 28" style={{ transform: goingLeft ? 'none' : 'scaleX(-1)' }}>
       <ellipse cx="20" cy="14" rx="16" ry="10" fill="#60A5FA" />
       <polygon points="36,14 44,6 44,22" fill="#3B82F6" />
       <circle cx="12" cy="11" r="3" fill="white" />
@@ -96,18 +96,21 @@ function SnowflakeMiniSVG() {
   );
 }
 
-// SVG Raindrop (hazard)
-function RaindropSVG() {
+// SVG Smog puff (hazard)
+function SmogSVG() {
   return (
-    <svg width="28" height="36" viewBox="0 0 28 36">
-      <path d="M14 4 Q22 16 22 22 A8 8 0 01 6 22 Q6 16 14 4z" fill="#EF4444" opacity="0.7" />
-      <ellipse cx="11" cy="20" rx="2" ry="3" fill="#FCA5A5" opacity="0.4" />
+    <svg width="30" height="30" viewBox="0 0 30 30">
+      <circle cx="15" cy="18" r="7" fill="#94A3B8" opacity="0.8" />
+      <circle cx="10" cy="14" r="5" fill="#94A3B8" opacity="0.6" />
+      <circle cx="20" cy="14" r="5" fill="#94A3B8" opacity="0.6" />
+      <circle cx="15" cy="11" r="4" fill="#94A3B8" opacity="0.5" />
     </svg>
   );
 }
 
 function GameItem({ item, onTap }) {
   const isHazard = item.type === 'trash' || item.type === 'rain';
+  const isSmog = item.type === 'rain';
 
   return (
     <div
@@ -124,10 +127,16 @@ function GameItem({ item, onTap }) {
         cursor: 'pointer',
         borderRadius: '50%',
         background: isHazard
-          ? 'radial-gradient(circle, rgba(239,68,68,0.12) 0%, transparent 70%)'
+          ? isSmog
+            ? 'radial-gradient(circle, rgba(148,163,184,0.15) 0%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(239,68,68,0.12) 0%, transparent 70%)'
           : 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
         animation: isHazard ? 'hazard-wobble 0.8s ease-in-out infinite' : 'item-float 1.5s ease-in-out infinite',
-        filter: isHazard ? 'drop-shadow(0 0 5px rgba(239,68,68,0.3))' : 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
+        filter: isHazard
+          ? isSmog
+            ? 'drop-shadow(0 0 5px rgba(148,163,184,0.4))'
+            : 'drop-shadow(0 0 5px rgba(239,68,68,0.3))'
+          : 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))',
         touchAction: 'none',
         WebkitTapHighlightColor: 'transparent',
         userSelect: 'none',
@@ -136,7 +145,7 @@ function GameItem({ item, onTap }) {
       {item.type === 'fish' && <FishSVG goingLeft={item.vx < 0} />}
       {item.type === 'trash' && <TrashSVG />}
       {item.type === 'snowflake' && <SnowflakeMiniSVG />}
-      {item.type === 'rain' && <RaindropSVG />}
+      {item.type === 'rain' && <SmogSVG />}
     </div>
   );
 }
@@ -514,9 +523,9 @@ function CatchGame({ type, onComplete }) {
           vy: (Math.random() - 0.5) * 20,
         }]);
       } else {
-        const isRain = Math.random() < 0.18;
+        const isSmog = Math.random() < 0.18;
         setItems(prev => [...prev, {
-          id, type: isRain ? 'rain' : 'snowflake',
+          id, type: isSmog ? 'rain' : 'snowflake',
           x: pad + Math.random() * (w - pad * 2),
           y: -pad,
           vx: (Math.random() - 0.5) * 20,
@@ -537,10 +546,14 @@ function CatchGame({ type, onComplete }) {
     const now = Date.now();
 
     if (isHazard) {
+      const hazardColor = item.type === 'rain' ? '#94A3B8' : '#EF4444';
+      const hazardBurstColors = item.type === 'rain'
+        ? ['#94A3B8', '#B0BEC5', '#CBD5E1', '#E2E8F0']
+        : ['#EF4444', '#FCA5A5', '#F87171', '#FECACA'];
       setEffects(prev => [...prev,
-        { id: nextId.current++, type: 'text', x: item.x, y: item.y - 20, text: '-1!', color: '#EF4444', time: now },
-        { id: nextId.current++, type: 'burst', x: item.x, y: item.y, colors: ['#EF4444', '#FCA5A5', '#F87171', '#FECACA'], time: now },
-        { id: nextId.current++, type: 'ring', x: item.x, y: item.y, color: '#EF4444', time: now },
+        { id: nextId.current++, type: 'text', x: item.x, y: item.y - 20, text: '-1!', color: hazardColor, time: now },
+        { id: nextId.current++, type: 'burst', x: item.x, y: item.y, colors: hazardBurstColors, time: now },
+        { id: nextId.current++, type: 'ring', x: item.x, y: item.y, color: hazardColor, time: now },
       ]);
       setScore(s => { const n = Math.max(0, s - 1); scoreRef.current = n; return n; });
       audio.miniHazard();
