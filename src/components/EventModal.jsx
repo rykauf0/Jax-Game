@@ -1,4 +1,21 @@
 import React from 'react';
+import { ShieldIcon, LightbulbIcon, ThermometerIcon, SnowflakeIcon, SunIcon, FishIcon, WindIcon, WaveIcon, TreeIcon, GlobeIcon, HeartIcon } from './Icons';
+
+// SVG icons for event types (replacing emoji)
+function EventIcon({ event }) {
+  const size = 48;
+  if (event.type === 'good') {
+    // Pick icon based on effects
+    if (event.effect?.temp < 0) return <SnowflakeIcon size={size} color="#60A5FA" />;
+    if (event.effect?.belly > 0) return <HeartIcon size={size} color="#F472B6" />;
+    if (event.effect?.stars) return <SunIcon size={size} color="#F59E0B" />;
+    return <GlobeIcon size={size} color="#22C55E" />;
+  }
+  // bad events
+  if (event.effect?.temp > 0) return <ThermometerIcon size={size} color="#EF4444" />;
+  if (event.effect?.belly < 0) return <WindIcon size={size} color="#94A3B8" />;
+  return <ThermometerIcon size={size} color="#F97316" />;
+}
 
 export default function EventModal({ event, onDismiss }) {
   if (!event) return null;
@@ -32,10 +49,11 @@ export default function EventModal({ event, onDismiss }) {
         {isBlocked ? (
           <>
             <div style={{
-              fontSize: '48px', marginBottom: '6px',
+              marginBottom: '6px',
               animation: 'shield-pulse 0.6s ease-out',
               filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
-            }}>🛡️</div>
+              display: 'flex', justifyContent: 'center',
+            }}><ShieldIcon size={48} color="#10B981" /></div>
             <div style={{
               fontSize: '18px', fontWeight: 700, color: '#059669',
               marginBottom: '4px',
@@ -49,11 +67,12 @@ export default function EventModal({ event, onDismiss }) {
         ) : (
           <>
             <div style={{
-              fontSize: '52px', marginBottom: '4px',
+              marginBottom: '4px',
               animation: isBad ? 'shake 0.4s ease-out' : 'icon-bounce 0.5s ease-out',
               filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))',
+              display: 'flex', justifyContent: 'center',
             }}>
-              {event.icon}
+              <EventIcon event={event} />
             </div>
             <div style={{
               fontSize: '19px', fontWeight: 700, color: titleColor, marginBottom: '2px',
@@ -74,7 +93,7 @@ export default function EventModal({ event, onDismiss }) {
                 border: '1px solid rgba(0,0,0,0.06)',
                 fontFamily: "'Nunito', sans-serif",
               }}>
-                💡 {event.fact}
+                <LightbulbIcon size={12} /> {event.fact}
               </div>
             )}
           </>

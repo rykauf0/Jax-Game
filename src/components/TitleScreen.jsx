@@ -2,6 +2,7 @@ import React from 'react';
 import { getHighScore, getAchievements } from '../utils/storage';
 import { ACHIEVEMENTS } from '../data/constants';
 import { audio } from '../utils/audio';
+import { TrophyIcon, MedalIcon, StarIcon, SnowflakeIcon } from './Icons';
 
 export default function TitleScreen({ onStart }) {
   const highScore = getHighScore();
@@ -14,9 +15,9 @@ export default function TitleScreen({ onStart }) {
   };
 
   const difficulties = [
-    { key: 'easy', label: 'Easy', color: '#22C55E', shadow: '#15803D', emoji: '🌟', desc: 'Best for beginners' },
-    { key: 'medium', label: 'Medium', color: '#F59E0B', shadow: '#B45309', emoji: '⭐', desc: 'A fair challenge' },
-    { key: 'hard', label: 'Hard', color: '#EF4444', shadow: '#B91C1C', emoji: '🔥', desc: 'For experts!' },
+    { key: 'easy', label: 'Easy', color: '#22C55E', shadow: '#15803D', icon: <SnowflakeIcon size={22} color="white" />, desc: 'Best for beginners' },
+    { key: 'medium', label: 'Medium', color: '#F59E0B', shadow: '#B45309', icon: <StarIcon size={22} color="white" />, desc: 'A fair challenge' },
+    { key: 'hard', label: 'Hard', color: '#EF4444', shadow: '#B91C1C', icon: <TrophyIcon size={22} color="white" />, desc: 'For experts!' },
   ];
 
   return (
@@ -43,11 +44,10 @@ export default function TitleScreen({ onStart }) {
           <div key={`snow-${i}`} style={{
             position: 'absolute',
             left: `${(i * 23) % 100}%`,
-            fontSize: `${8 + (i % 3) * 4}px`,
             opacity: 0.3 + (i % 3) * 0.1,
             animation: `snow-fall ${10 + i * 2}s linear infinite ${i * 1.5}s`,
           }}>
-            ❄
+            <SnowflakeIcon size={8 + (i % 3) * 4} color="white" />
           </div>
         ))}
       </div>
@@ -129,7 +129,7 @@ export default function TitleScreen({ onStart }) {
               border: '1px solid rgba(255,255,255,0.15)',
               backdropFilter: 'blur(4px)',
             }}>
-              🏆 {highScore}
+              <TrophyIcon size={14} /> {highScore}
             </div>
           )}
           {achievementCount > 0 && (
@@ -139,7 +139,7 @@ export default function TitleScreen({ onStart }) {
               border: '1px solid rgba(255,255,255,0.15)',
               backdropFilter: 'blur(4px)',
             }}>
-              🎖️ {achievementCount}/{ACHIEVEMENTS.length}
+              <MedalIcon size={14} /> {achievementCount}/{ACHIEVEMENTS.length}
             </div>
           )}
         </div>
@@ -173,7 +173,7 @@ export default function TitleScreen({ onStart }) {
               e.currentTarget.style.boxShadow = `0 4px 0 ${d.shadow}, 0 6px 16px rgba(0,0,0,0.2)`;
             }}
           >
-            <span style={{ fontSize: '22px' }}>{d.emoji}</span>
+            <span style={{ display: 'flex', alignItems: 'center' }}>{d.icon}</span>
             {d.label}
           </button>
         ))}

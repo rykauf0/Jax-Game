@@ -1,4 +1,25 @@
 import React, { useState } from 'react';
+import {
+  FishIcon, SealHuntIcon, WindIcon, SolarIcon, WaveIcon, FactoryIcon,
+  IceIcon, ShieldIcon, HomeIcon, MagnifyIcon, HelicopterIcon, GlobeIcon,
+  TreeIcon, StarIcon, FeedIcon,
+} from './Icons';
+
+const CARD_ICONS = {
+  fish: (s) => <FeedIcon size={s} />,
+  seal: (s) => <SealHuntIcon size={s} />,
+  wind: (s) => <WindIcon size={s} color="#60A5FA" />,
+  solar: (s) => <SolarIcon size={s} color="#F59E0B" />,
+  wave: (s) => <WaveIcon size={s} color="#3B82F6" />,
+  factory: (s) => <FactoryIcon size={s} color="#6B7280" />,
+  ice: (s) => <IceIcon size={s} color="#38BDF8" />,
+  shield: (s) => <ShieldIcon size={s} color="#10B981" />,
+  home: (s) => <HomeIcon size={s} color="#92400E" />,
+  magnify: (s) => <MagnifyIcon size={s} color="#8B5CF6" />,
+  helicopter: (s) => <HelicopterIcon size={s} color="#DC2626" />,
+  globe: (s) => <GlobeIcon size={s} color="#2563EB" />,
+  tree: (s) => <TreeIcon size={s} color="#22C55E" />,
+};
 
 const rarityStyles = {
   common: {
@@ -56,7 +77,7 @@ export default function ActionCard({ card, canAfford, onPlay }) {
         transform: pressed ? 'translateY(4px) scale(0.96)' : 'translateY(0) scale(1)',
         transition: 'transform 0.1s, box-shadow 0.1s',
         width: '100%',
-        minHeight: '100px',
+        minHeight: '115px',
         fontFamily: "'Nunito', sans-serif",
         position: 'relative',
         overflow: 'hidden',
@@ -87,10 +108,11 @@ export default function ActionCard({ card, canAfford, onPlay }) {
 
       {/* Icon — BIG */}
       <span style={{
-        fontSize: '32px', lineHeight: 1,
+        lineHeight: 1,
         filter: canAfford ? 'drop-shadow(0 2px 3px rgba(0,0,0,0.1))' : 'grayscale(0.7)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        {card.icon}
+        {CARD_ICONS[card.iconType] ? CARD_ICONS[card.iconType](36) : <FishIcon size={36} />}
       </span>
 
       {/* Name — bold and readable */}
@@ -123,7 +145,7 @@ export default function ActionCard({ card, canAfford, onPlay }) {
         display: 'flex', alignItems: 'center', gap: '3px',
         border: `1.5px solid ${canAfford ? '#FCD34D' : '#D1D5DB'}`,
       }}>
-        {card.cost} ⭐
+        {card.cost} <StarIcon size={13} />
       </span>
     </button>
   );

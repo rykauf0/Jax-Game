@@ -3,6 +3,32 @@ import { calculateScore, checkAchievements } from '../hooks/useGameState';
 import { setHighScore, unlockAchievement, incrementGamesPlayed } from '../utils/storage';
 import { ACHIEVEMENTS } from '../data/constants';
 import { audio } from '../utils/audio';
+import {
+  TrophyIcon, HeartIcon, CalendarIcon, FactoryIcon, MagnifyIcon, GamepadIcon,
+  GlobeIcon, BearIcon, ThermometerIcon, MedalIcon, StarIcon, ShieldIcon,
+  IceIcon, FishIcon,
+} from './Icons';
+
+const SCORE_ICON_MAP = {
+  calendar: (s) => <CalendarIcon size={s} />,
+  heart: (s) => <HeartIcon size={s} />,
+  factory: (s) => <FactoryIcon size={s} />,
+  magnify: (s) => <MagnifyIcon size={s} />,
+  gamepad: (s) => <GamepadIcon size={s} />,
+  globe: (s) => <GlobeIcon size={s} />,
+  bear: (s) => <BearIcon size={s} />,
+  trophy: (s) => <TrophyIcon size={s} />,
+  thermometer: (s) => <ThermometerIcon size={s} />,
+  shield: (s) => <ShieldIcon size={s} />,
+  ice: (s) => <IceIcon size={s} />,
+  star: (s) => <StarIcon size={s} />,
+  fish: (s) => <FishIcon size={s} />,
+};
+
+function ScoreIcon({ type, size = 16 }) {
+  const render = SCORE_ICON_MAP[type];
+  return render ? render(size) : <StarIcon size={size} />;
+}
 
 export default function EndScreen({ state, onRestart }) {
   const [newAchs, setNewAchs] = useState([]);
@@ -77,11 +103,12 @@ export default function EndScreen({ state, onRestart }) {
 
       {/* Trophy / Emoji */}
       <div style={{
-        fontSize: '56px', marginTop: '8px',
+        marginTop: '8px',
         animation: 'icon-bounce 0.6s ease-out',
         filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))',
+        display: 'flex', justifyContent: 'center',
       }}>
-        {isWin ? tier.emoji : '💙'}
+        {isWin ? <TrophyIcon size={56} color={tier.color === '#B9F2FF' ? '#0891B2' : tier.color} /> : <HeartIcon size={56} color="#3B82F6" />}
       </div>
 
       {/* Title */}
@@ -124,7 +151,7 @@ export default function EndScreen({ state, onRestart }) {
             animation: `slide-in 0.3s ease-out ${0.5 + i * 0.08}s both`,
           }}>
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '16px' }}>{item.emoji}</span>
+              <span style={{ display: 'flex', alignItems: 'center' }}><ScoreIcon type={item.iconType} /></span>
               <span style={{ color: '#4B5563', fontFamily: "'Nunito', sans-serif" }}>{item.label}</span>
             </span>
             <span style={{
@@ -146,14 +173,14 @@ export default function EndScreen({ state, onRestart }) {
           animation: 'modal-bounce 0.5s ease-out 1s both',
           boxShadow: '0 0 12px rgba(251,191,36,0.2)',
         }}>
-          <div style={{ fontSize: '13px', fontWeight: 700, color: '#D97706', marginBottom: '4px' }}>
-            🎖️ New Achievements!
+          <div style={{ fontSize: '13px', fontWeight: 700, color: '#D97706', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <MedalIcon size={14} /> New Achievements!
           </div>
           {newAchs.map(id => {
             const ach = ACHIEVEMENTS.find(a => a.id === id);
             return ach ? (
               <div key={id} style={{ fontSize: '13px', color: '#4B5563', padding: '2px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <span style={{ fontSize: '16px' }}>{ach.emoji}</span> {ach.name}
+                <ScoreIcon type={ach.iconType} /> {ach.name}
               </div>
             ) : null;
           })}

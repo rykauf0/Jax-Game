@@ -36,10 +36,10 @@ export const INFRA_COOLING = {
 };
 
 export const INFRA_LABELS = {
-  wind: { icon: '💨', name: 'Wind' },
-  solar: { icon: '☀️', name: 'Solar' },
-  ocean: { icon: '🌊', name: 'Ocean' },
-  carbon: { icon: '🧹', name: 'Carbon' },
+  wind: { iconType: 'wind', name: 'Wind' },
+  solar: { iconType: 'solar', name: 'Solar' },
+  ocean: { iconType: 'wave', name: 'Ocean' },
+  carbon: { iconType: 'factory', name: 'Carbon' },
 };
 
 export const TOTAL_TURNS = 15;
@@ -54,35 +54,35 @@ export const MINI_GAME_START_TURN = 3;
 export const MINI_GAME_DURATION = 10;
 
 export const TEMP_LABELS = [
-  { max: 1.5, label: '❄️ Cold', color: '#60A5FA' },
-  { max: 2.0, label: '🌡️ Warm', color: '#FBBF24' },
-  { max: 2.5, label: '🔥 Hot', color: '#F97316' },
-  { max: Infinity, label: '☀️ Danger!', color: '#EF4444' },
+  { max: 1.5, label: 'Cold', iconType: 'snowflake', color: '#60A5FA' },
+  { max: 2.0, label: 'Warm', iconType: 'thermometer', color: '#FBBF24' },
+  { max: 2.5, label: 'Hot', iconType: 'thermometer', color: '#F97316' },
+  { max: Infinity, label: 'Danger!', iconType: 'sun', color: '#EF4444' },
 ];
 
 export const SCORE_TIERS = [
-  { name: 'Diamond', emoji: '💎', min: 1200, color: '#B9F2FF' },
-  { name: 'Gold', emoji: '🥇', min: 800, color: '#FBBF24' },
-  { name: 'Silver', emoji: '🥈', min: 500, color: '#C0C0C0' },
-  { name: 'Bronze', emoji: '🥉', min: 0, color: '#CD7F32' },
+  { name: 'Diamond', iconType: 'trophy', min: 1200, color: '#B9F2FF' },
+  { name: 'Gold', iconType: 'trophy', min: 800, color: '#FBBF24' },
+  { name: 'Silver', iconType: 'trophy', min: 500, color: '#C0C0C0' },
+  { name: 'Bronze', iconType: 'trophy', min: 0, color: '#CD7F32' },
 ];
 
 export const FRIENDS = [
-  { id: 'seal', name: 'Seal', icon: '🦭' },
-  { id: 'owl', name: 'Snowy Owl', icon: '🦉' },
-  { id: 'fox', name: 'Arctic Fox', icon: '🦊' },
-  { id: 'narwhal', name: 'Narwhal', icon: '🐳' },
-  { id: 'penguin', name: 'Penguin', icon: '🐧' },
-  { id: 'eagle', name: 'Eagle', icon: '🦅' },
+  { id: 'seal', name: 'Seal' },
+  { id: 'owl', name: 'Snowy Owl' },
+  { id: 'fox', name: 'Arctic Fox' },
+  { id: 'narwhal', name: 'Narwhal' },
+  { id: 'penguin', name: 'Penguin' },
+  { id: 'eagle', name: 'Eagle' },
 ];
 
 export const ACHIEVEMENTS = [
-  { id: 'first_game', name: 'First Steps', emoji: '👣', req: 'Complete any game' },
-  { id: 'guardian', name: 'Polar Guardian', emoji: '🛡️', req: 'Win on any difficulty' },
-  { id: 'ice_master', name: 'Ice Master', emoji: '🧊', req: 'Win with temp under 1.8°' },
-  { id: 'bear_family', name: 'Bear Family', emoji: '👨‍👩‍👧‍👦', req: 'Win with cubs alive' },
-  { id: 'green_builder', name: 'Builder', emoji: '🏗️', req: 'Build 5+ infrastructure' },
-  { id: 'diamond_mind', name: 'Diamond Mind', emoji: '💎', req: 'Score 1200+' },
-  { id: 'hero_mode', name: 'True Hero', emoji: '🔥', req: 'Win on Hard' },
-  { id: 'well_fed', name: 'Well Fed', emoji: '🐟', req: 'Win with 70%+ belly' },
+  { id: 'first_game', name: 'First Steps', iconType: 'bear', req: 'Complete any game' },
+  { id: 'guardian', name: 'Polar Guardian', iconType: 'shield', req: 'Win on any difficulty' },
+  { id: 'ice_master', name: 'Ice Master', iconType: 'ice', req: 'Win with temp under 1.8°' },
+  { id: 'bear_family', name: 'Bear Family', iconType: 'heart', req: 'Win with cubs alive' },
+  { id: 'green_builder', name: 'Builder', iconType: 'factory', req: 'Build 5+ infrastructure' },
+  { id: 'diamond_mind', name: 'Diamond Mind', iconType: 'trophy', req: 'Score 1200+' },
+  { id: 'hero_mode', name: 'True Hero', iconType: 'star', req: 'Win on Hard' },
+  { id: 'well_fed', name: 'Well Fed', iconType: 'fish', req: 'Win with 70%+ belly' },
 ];

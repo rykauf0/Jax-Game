@@ -123,30 +123,56 @@ export default function PolarBear({ belly, hasCubs, cubsAlive }) {
         </g>
       </g>
 
-      {/* CUBS - small cute bear */}
+      {/* CUBS - 2 baby bears */}
       {hasCubs && cubsAlive && (
-        <g className="bear-mood-happy" style={{ transformOrigin: '165px 130px' }}>
-          <g transform="translate(150, 95) scale(0.42)">
-            <ellipse cx="100" cy="105" rx="40" ry="34" fill="#FAF6F0" />
-            <ellipse cx="100" cy="110" rx="24" ry="20" fill="white" opacity="0.3" />
-            <ellipse cx="80" cy="130" rx="11" ry="13" fill="#FAF6F0" />
-            <ellipse cx="120" cy="130" rx="11" ry="13" fill="#FAF6F0" />
-            <ellipse cx="100" cy="62" rx="28" ry="26" fill="#FAFAF5" />
-            <circle cx="78" cy="43" r="10" fill="#FAF6F0" />
-            <circle cx="78" cy="43" r="6" fill="#FFCDD2" />
-            <circle cx="122" cy="43" r="10" fill="#FAF6F0" />
-            <circle cx="122" cy="43" r="6" fill="#FFCDD2" />
-            <circle cx="90" cy="58" r="4" fill="#2D2D2D" />
-            <circle cx="110" cy="58" r="4" fill="#2D2D2D" />
-            <circle cx="91.5" cy="56.5" r="1.5" fill="white" />
-            <circle cx="111.5" cy="56.5" r="1.5" fill="white" />
-            <circle cx="82" cy="65" r="6" fill="url(#cheekBlush)" />
-            <circle cx="118" cy="65" r="6" fill="url(#cheekBlush)" />
-            <ellipse cx="100" cy="68" rx="10" ry="8" fill="#EDE8E0" />
-            <ellipse cx="100" cy="66" rx="4.5" ry="3" fill="#2D2D2D" />
-            <path d="M94 72 Q100 78 106 72" stroke="#2D2D2D" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+        <>
+          {/* Cub 1 — slightly to the right */}
+          <g className="bear-mood-happy" style={{ transformOrigin: '160px 130px' }}>
+            <g transform="translate(145, 100) scale(0.35)">
+              <ellipse cx="100" cy="105" rx="36" ry="30" fill="#FAF6F0" />
+              <ellipse cx="100" cy="108" rx="20" ry="16" fill="white" opacity="0.3" />
+              <ellipse cx="82" cy="128" rx="10" ry="11" fill="#FAF6F0" />
+              <ellipse cx="118" cy="128" rx="10" ry="11" fill="#FAF6F0" />
+              <ellipse cx="100" cy="65" rx="24" ry="22" fill="#FAFAF5" />
+              <circle cx="82" cy="48" r="8" fill="#FAF6F0" />
+              <circle cx="82" cy="48" r="5" fill="#FFCDD2" />
+              <circle cx="118" cy="48" r="8" fill="#FAF6F0" />
+              <circle cx="118" cy="48" r="5" fill="#FFCDD2" />
+              <circle cx="92" cy="62" r="3.5" fill="#2D2D2D" />
+              <circle cx="108" cy="62" r="3.5" fill="#2D2D2D" />
+              <circle cx="93" cy="60.5" r="1.2" fill="white" />
+              <circle cx="109" cy="60.5" r="1.2" fill="white" />
+              <circle cx="84" cy="68" r="5" fill="url(#cheekBlush)" />
+              <circle cx="116" cy="68" r="5" fill="url(#cheekBlush)" />
+              <ellipse cx="100" cy="70" rx="8" ry="6" fill="#EDE8E0" />
+              <ellipse cx="100" cy="68" rx="4" ry="2.5" fill="#2D2D2D" />
+              <path d="M95 74 Q100 79 105 74" stroke="#2D2D2D" strokeWidth="1.3" fill="none" strokeLinecap="round" />
+            </g>
           </g>
-        </g>
+          {/* Cub 2 — slightly behind and to the far right */}
+          <g className="bear-mood-okay" style={{ transformOrigin: '195px 135px' }}>
+            <g transform="translate(180, 108) scale(0.3)">
+              <ellipse cx="100" cy="105" rx="34" ry="28" fill="#F5F0E8" />
+              <ellipse cx="100" cy="108" rx="18" ry="14" fill="white" opacity="0.3" />
+              <ellipse cx="84" cy="126" rx="9" ry="10" fill="#F5F0E8" />
+              <ellipse cx="116" cy="126" rx="9" ry="10" fill="#F5F0E8" />
+              <ellipse cx="100" cy="68" rx="22" ry="20" fill="#FAF6F0" />
+              <circle cx="84" cy="52" r="7" fill="#F5F0E8" />
+              <circle cx="84" cy="52" r="4.5" fill="#FFCDD2" />
+              <circle cx="116" cy="52" r="7" fill="#F5F0E8" />
+              <circle cx="116" cy="52" r="4.5" fill="#FFCDD2" />
+              <circle cx="93" cy="65" r="3" fill="#2D2D2D" />
+              <circle cx="107" cy="65" r="3" fill="#2D2D2D" />
+              <circle cx="93.8" cy="63.5" r="1" fill="white" />
+              <circle cx="107.8" cy="63.5" r="1" fill="white" />
+              <circle cx="86" cy="72" r="4.5" fill="url(#cheekBlush)" />
+              <circle cx="114" cy="72" r="4.5" fill="url(#cheekBlush)" />
+              <ellipse cx="100" cy="73" rx="7" ry="5.5" fill="#EDE8E0" />
+              <ellipse cx="100" cy="71" rx="3.5" ry="2.2" fill="#2D2D2D" />
+              <path d="M96 76 Q100 80 104 76" stroke="#2D2D2D" strokeWidth="1.2" fill="none" strokeLinecap="round" />
+            </g>
+          </g>
+        </>
       )}
     </g>
   );

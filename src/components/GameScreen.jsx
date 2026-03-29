@@ -6,6 +6,11 @@ import MiniGame from './MiniGame';
 import { ParticleLayer, useParticles } from '../utils/particles';
 import { TEMP_LABELS, TOTAL_TURNS, START_YEAR, YEARS_PER_TURN, INFRA_LABELS, FRIENDS, DIFFICULTY } from '../data/constants';
 import { audio, startBgMusic, stopBgMusic } from '../utils/audio';
+import {
+  HeartIcon, StarIcon, CalendarIcon, SnowflakeIcon, ThermometerIcon, SunIcon,
+  WindIcon, SolarIcon, WaveIcon, FactoryIcon, MagnifyIcon, ShieldIcon,
+  TrophyIcon, BearIcon, SpeakerIcon, FRIEND_SVGS,
+} from './Icons';
 
 function FriendBanner({ friendId, onDone }) {
   const friend = FRIENDS.find(f => f.id === friendId);
@@ -24,7 +29,9 @@ function FriendBanner({ friendId, onDone }) {
       animation: 'slide-down 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
       fontFamily: "'Fredoka', 'Nunito', sans-serif",
     }}>
-      <span style={{ fontSize: '32px', filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.15))' }}>{friend.icon}</span>
+      <span style={{ filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.15))', display: 'flex', alignItems: 'center' }}>
+        {FRIEND_SVGS[friendId] ? React.createElement(FRIEND_SVGS[friendId], { size: 32 }) : null}
+      </span>
       <div>
         <div style={{ fontSize: '16px', fontWeight: 700, color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}>New Friend!</div>
         <div style={{ fontSize: '12px', color: '#FFFBEB' }}>{friend.name} +50 pts</div>
@@ -48,7 +55,7 @@ function CubsAnnouncement({ onDismiss }) {
         border: '3px solid #FCD34D',
         boxShadow: '0 12px 32px rgba(0,0,0,0.2)',
       }} onClick={e => e.stopPropagation()}>
-        <div style={{ fontSize: '52px', marginBottom: '6px', animation: 'icon-bounce 0.5s ease-out' }}>🐻‍❄️</div>
+        <div style={{ marginBottom: '6px', animation: 'icon-bounce 0.5s ease-out', display: 'flex', justifyContent: 'center' }}><BearIcon size={52} color="#F5F0E8" /></div>
         <div style={{ fontSize: '24px', fontWeight: 700, color: '#B45309' }}>Cubs Born!</div>
         <div style={{ fontSize: '14px', color: '#78716C', margin: '6px 0', fontFamily: "'Nunito', sans-serif" }}>
           Aka has cubs! They need extra food but earn bonus points!
@@ -189,7 +196,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
           fontSize: '16px', cursor: 'pointer', padding: '4px 8px', minHeight: '32px', minWidth: '32px',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          {muted ? '🔇' : '🔊'}
+          <SpeakerIcon size={18} on={!muted} />
         </button>
         <div style={{
           display: 'flex', alignItems: 'center', gap: '3px',
@@ -200,7 +207,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
           <span style={{ fontWeight: 800, color: '#B45309', fontSize: '15px', fontFamily: "'Fredoka', sans-serif" }}>
             {state.stars}
           </span>
-          <span style={{ fontSize: '15px' }}>⭐</span>
+          <StarIcon size={15} />
         </div>
       </div>
 
@@ -218,7 +225,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
         padding: '4px 10px', background: 'white',
         borderBottom: '1px solid #E2E8F0', flexShrink: 0,
       }}>
-        <span style={{ fontSize: '14px' }}>❤️</span>
+        <HeartIcon size={14} />
         <div style={{
           flex: 1, height: '12px', background: bellyBg, borderRadius: '6px',
           overflow: 'hidden', border: `1.5px solid ${bellyColor}33`,
@@ -256,39 +263,44 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
         borderBottom: '1px solid #E2E8F0', flexShrink: 0,
         fontSize: '11px', fontWeight: 600, gap: '4px',
       }}>
-        <span style={{ color: '#64748B', fontFamily: "'Fredoka', sans-serif" }}>
-          📅 {year}
+        <span style={{ color: '#64748B', fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '2px' }}>
+          <CalendarIcon size={11} /> {year}
         </span>
-        <span style={{ color: '#64748B', fontFamily: "'Fredoka', sans-serif" }}>
-          {state.temp < 1.8 ? '🧊' : state.temp < 2.5 ? '💧' : '🏜️'}
+        <span style={{ color: '#64748B', fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '2px' }}>
+          {state.temp < 1.8 ? <SnowflakeIcon size={12} /> : state.temp < 2.5 ? <WaveIcon size={12} color="#60A5FA" /> : <SunIcon size={12} color="#EF4444" />}
           {state.temp < 1.8 ? ' Ice' : state.temp < 2.5 ? ' Thin' : ' Bare'}
         </span>
         {/* Infra icons inline */}
         <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
-          {Object.entries(INFRA_LABELS).map(([key, info]) => (
-            state.infra[key] > 0 ? (
-              <span key={key} style={{ display: 'flex', alignItems: 'center', fontSize: '12px' }}>
-                {info.icon}<span style={{ fontWeight: 800, fontSize: '10px', color: '#3B82F6', fontFamily: "'Fredoka', sans-serif" }}>{state.infra[key]}</span>
+          {Object.entries(INFRA_LABELS).map(([key, info]) => {
+            const IconMap = { wind: WindIcon, solar: SolarIcon, wave: WaveIcon, factory: FactoryIcon };
+            const IC = IconMap[info.iconType];
+            return state.infra[key] > 0 ? (
+              <span key={key} style={{ display: 'flex', alignItems: 'center', gap: '1px' }}>
+                {IC && <IC size={12} />}<span style={{ fontWeight: 800, fontSize: '10px', color: '#3B82F6', fontFamily: "'Fredoka', sans-serif" }}>{state.infra[key]}</span>
               </span>
-            ) : null
-          ))}
-          {state.researchLevel > 0 && <span style={{ fontSize: '12px' }}>🔬{state.researchLevel}</span>}
-          {state.shield && <span style={{ fontSize: '12px' }}>🛡️</span>}
+            ) : null;
+          })}
+          {state.researchLevel > 0 && <span style={{ display: 'flex', alignItems: 'center', gap: '1px' }}><MagnifyIcon size={12} /><span style={{ fontWeight: 800, fontSize: '10px', color: '#8B5CF6' }}>{state.researchLevel}</span></span>}
+          {state.shield && <ShieldIcon size={12} />}
         </div>
         {/* Friends */}
-        <div style={{ display: 'flex', gap: '1px' }}>
-          {FRIENDS.map(f => (
-            <span key={f.id} style={{
-              fontSize: '12px',
-              opacity: state.friends.includes(f.id) ? 1 : 0.15,
-              filter: state.friends.includes(f.id) ? 'none' : 'grayscale(1)',
-            }}>
-              {f.icon}
-            </span>
-          ))}
+        <div style={{ display: 'flex', gap: '1px', alignItems: 'center' }}>
+          {FRIENDS.map(f => {
+            const FriendIcon = FRIEND_SVGS[f.id];
+            return (
+              <span key={f.id} style={{
+                opacity: state.friends.includes(f.id) ? 1 : 0.15,
+                filter: state.friends.includes(f.id) ? 'none' : 'grayscale(1)',
+                display: 'flex', alignItems: 'center',
+              }}>
+                {FriendIcon && <FriendIcon size={14} />}
+              </span>
+            );
+          })}
         </div>
-        <span style={{ color: '#B45309', fontWeight: 800, fontFamily: "'Fredoka', sans-serif" }}>
-          🏆 {approxScore}
+        <span style={{ color: '#B45309', fontWeight: 800, fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '2px' }}>
+          <TrophyIcon size={12} /> {approxScore}
         </span>
       </div>
 
@@ -315,7 +327,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
                 marginBottom: '6px',
                 animation: 'fade-in 0.3s ease-out',
               }}>
-                {canAffordAny ? '👆 Tap a card to play!' : '⬇️ Tap Jump to continue!'}
+                {canAffordAny ? 'Tap a card to play!' : 'Tap Jump to continue!'}
               </div>
               <div style={{
                 display: 'flex', gap: '10px', justifyContent: 'center',
@@ -325,7 +337,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
                   <div key={card.id} style={{
                     animation: `card-deal 0.3s ease-out ${i * 0.08}s both`,
                     flex: '1 1 0', display: 'flex', justifyContent: 'center',
-                    maxWidth: '130px',
+                    maxWidth: '140px',
                   }}>
                     <ActionCard
                       card={card}
@@ -342,7 +354,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
               textAlign: 'center', fontFamily: "'Fredoka', sans-serif",
               animation: 'icon-bounce 0.5s ease-out',
             }}>
-              <div style={{ fontSize: '36px', marginBottom: '4px' }}>⬇️</div>
+              <div style={{ fontSize: '18px', fontWeight: 700, color: '#3B82F6', marginBottom: '4px' }}>Ready?</div>
               <div style={{ fontSize: '16px', fontWeight: 700, color: '#64748B' }}>
                 Tap Jump to continue!
               </div>
@@ -353,7 +365,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
               textAlign: 'center', fontSize: '32px', fontFamily: "'Fredoka', sans-serif",
               color: '#3B82F6', animation: 'icon-bounce 0.5s ease-out',
             }}>
-              ⏩ +3 Years...
+              +3 Years...
             </div>
           )}
         </div>
@@ -402,7 +414,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
                 : '0 4px 0 #1D4ED8, 0 6px 16px rgba(37,99,235,0.3)';
             }}
           >
-            ⏩ Jump 3 Years
+            Jump 3 Years
           </button>
         )}
       </div>

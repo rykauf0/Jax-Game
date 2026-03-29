@@ -26,18 +26,18 @@ export function calculateScore(state) {
   const yearsSurvived = state.year - START_YEAR;
   const infraCount = Object.values(state.infra).reduce((a, b) => a + b, 0);
   const items = [
-    { label: 'Years Survived', emoji: '📅', points: yearsSurvived * 8 },
-    { label: 'Belly Health', emoji: '❤️', points: Math.round(state.belly * 3) },
-    { label: 'Infrastructure', emoji: '🏗️', points: infraCount * 15 },
-    { label: 'Research', emoji: '🔬', points: state.researchLevel * 10 },
-    { label: 'Mini-Games', emoji: '🎮', points: state.miniGameScore * 20 },
-    { label: 'Friends', emoji: '🤝', points: state.friends.length * 50 },
+    { label: 'Years Survived', iconType: 'calendar', points: yearsSurvived * 8 },
+    { label: 'Belly Health', iconType: 'heart', points: Math.round(state.belly * 3) },
+    { label: 'Infrastructure', iconType: 'factory', points: infraCount * 15 },
+    { label: 'Research', iconType: 'magnify', points: state.researchLevel * 10 },
+    { label: 'Mini-Games', iconType: 'gamepad', points: state.miniGameScore * 20 },
+    { label: 'Friends', iconType: 'globe', points: state.friends.length * 50 },
   ];
-  if (state.cubsAlive) items.push({ label: 'Cubs Survived', emoji: '🐻', points: 100 });
-  if (state.won) items.push({ label: 'Victory Bonus', emoji: '🏆', points: 200 });
+  if (state.cubsAlive) items.push({ label: 'Cubs Survived', iconType: 'bear', points: 100 });
+  if (state.won) items.push({ label: 'Victory Bonus', iconType: 'trophy', points: 200 });
 
   const tempPenalty = state.temp > 2.0 ? Math.round((state.temp - 2.0) * 25) : 0;
-  if (tempPenalty > 0) items.push({ label: 'Heat Penalty', emoji: '🌡️', points: -tempPenalty });
+  if (tempPenalty > 0) items.push({ label: 'Heat Penalty', iconType: 'thermometer', points: -tempPenalty });
 
   const total = items.reduce((a, b) => a + b.points, 0);
   const tier = SCORE_TIERS.find(t => total >= t.min) || SCORE_TIERS[SCORE_TIERS.length - 1];
@@ -227,7 +227,7 @@ export function useGameState() {
 
       // Check for mini-game
       if (prev.turn >= MINI_GAME_START_TURN && Math.random() < MINI_GAME_CHANCE) {
-        const types = ['fish', 'pollution', 'snowflake'];
+        const types = ['fish', 'memory', 'snowflake'];
         next.phase = 'miniGame';
         next.miniGameType = types[Math.floor(Math.random() * types.length)];
       } else {
@@ -249,9 +249,10 @@ export function useGameState() {
       if (type === 'fish') {
         next.belly = Math.min(100, next.belly + Math.round(score * 3));
         next.stars += Math.max(1, Math.floor(score / 2));
-      } else if (type === 'pollution') {
+      } else if (type === 'memory') {
+        next.belly = Math.min(100, next.belly + Math.round(score * 2));
         next.temp = Math.max(0.5, next.temp - score * 0.01);
-        next.stars += Math.max(1, Math.floor(score / 3));
+        next.stars += Math.max(1, Math.floor(score / 2));
       } else if (type === 'snowflake') {
         next.belly = Math.min(100, next.belly + Math.round(score * 2));
         next.temp = Math.max(0.5, next.temp - score * 0.008);
