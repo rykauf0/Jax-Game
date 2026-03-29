@@ -6,12 +6,13 @@ import { audio } from '../utils/audio';
 
 export default function EndScreen({ state, onRestart }) {
   const [newAchs, setNewAchs] = useState([]);
+  const [showScore, setShowScore] = useState(false);
+  const [animScore, setAnimScore] = useState(0);
   const scoreData = calculateScore(state);
 
   useEffect(() => {
     incrementGamesPlayed();
     setHighScore(scoreData.total);
-
     const earned = checkAchievements(state, scoreData.total);
     const newlyUnlocked = [];
     earned.forEach(id => {
@@ -21,61 +22,113 @@ export default function EndScreen({ state, onRestart }) {
 
     if (state.won) audio.win();
     else audio.lose();
+
+    // Animate score counting up
+    setTimeout(() => setShowScore(true), 400);
   }, []);
+
+  // Count-up animation
+  useEffect(() => {
+    if (!showScore) return;
+    const target = scoreData.total;
+    const duration = 1200;
+    const start = performance.now();
+    const tick = (now) => {
+      const elapsed = now - start;
+      const progress = Math.min(1, elapsed / duration);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setAnimScore(Math.round(target * eased));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [showScore, scoreData.total]);
+
+  const isWin = state.won;
+  const tier = scoreData.tier;
 
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center',
-      height: '100vh', padding: '16px',
-      fontFamily: 'Fredoka, Nunito, sans-serif',
-      background: state.won
-        ? `linear-gradient(180deg, ${scoreData.tier.color}33 0%, #F0FDF4 100%)`
-        : 'linear-gradient(180deg, #FEE2E2 0%, #FEF2F2 100%)',
+      height: '100vh', padding: '12px 16px',
+      fontFamily: "'Fredoka', 'Nunito', sans-serif",
+      background: isWin
+        ? `linear-gradient(180deg, ${tier.color}44 0%, #F8FAFC 50%, #F0FDF4 100%)`
+        : 'linear-gradient(180deg, #FEE2E2 0%, #FFF5F5 100%)',
       overflowY: 'auto',
+      position: 'relative',
     }}>
-      {/* Header */}
-      <div style={{ fontSize: '40px', marginTop: '8px' }}>
-        {state.won ? scoreData.tier.emoji : '💙'}
-      </div>
-      <h1 style={{
-        fontSize: '24px', fontWeight: 700, margin: '4px 0',
-        color: state.won ? '#059669' : '#DC2626',
+      {/* Confetti on win */}
+      {isWin && (
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+          {Array.from({ length: 20 }, (_, i) => (
+            <div key={i} style={{
+              position: 'absolute',
+              left: `${(i * 13) % 100}%`,
+              width: `${6 + (i % 3) * 3}px`,
+              height: `${6 + (i % 3) * 3}px`,
+              borderRadius: i % 2 ? '50%' : '2px',
+              background: ['#FBBF24', '#F472B6', '#34D399', '#60A5FA', '#A78BFA', '#FB923C'][i % 6],
+              animation: `confetti-fall ${3 + (i % 4)}s ease-in infinite ${i * 0.2}s`,
+              opacity: 0.8,
+            }} />
+          ))}
+        </div>
+      )}
+
+      {/* Trophy / Emoji */}
+      <div style={{
+        fontSize: '56px', marginTop: '8px',
+        animation: 'icon-bounce 0.6s ease-out',
+        filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))',
       }}>
-        {state.won ? `${scoreData.tier.name} Guardian!` : "Don't Give Up!"}
+        {isWin ? tier.emoji : '💙'}
+      </div>
+
+      {/* Title */}
+      <h1 style={{
+        fontSize: '26px', fontWeight: 700, margin: '4px 0 2px',
+        color: isWin ? '#059669' : '#DC2626',
+        animation: 'modal-bounce 0.5s ease-out',
+      }}>
+        {isWin ? `${tier.name} Guardian!` : "Keep Trying!"}
       </h1>
-      {!state.won && (
-        <p style={{ fontSize: '13px', color: '#6B7280', margin: '0 0 8px 0', textAlign: 'center' }}>
-          Aka needs your help! Try again!
+      {!isWin && (
+        <p style={{ fontSize: '13px', color: '#6B7280', margin: '0 0 6px', textAlign: 'center', fontFamily: "'Nunito', sans-serif" }}>
+          Aka needs your help! You'll do better next time!
         </p>
       )}
 
-      {/* Score */}
+      {/* Animated score */}
       <div style={{
-        fontSize: '32px', fontWeight: 700,
-        color: state.won ? scoreData.tier.color === '#B9F2FF' ? '#0891B2' : '#D97706' : '#6B7280',
-        textShadow: '0 1px 3px rgba(0,0,0,0.1)',
+        fontSize: '40px', fontWeight: 700,
+        color: isWin ? (tier.color === '#B9F2FF' ? '#0891B2' : '#D97706') : '#6B7280',
+        textShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        animation: showScore ? 'score-pop 0.4s ease-out' : 'none',
+        opacity: showScore ? 1 : 0,
       }}>
-        {scoreData.total} pts
+        {animScore} pts
       </div>
 
-      {/* Breakdown */}
+      {/* Score breakdown */}
       <div style={{
         width: '100%', maxWidth: '300px', background: 'white',
-        borderRadius: '12px', padding: '10px', margin: '8px 0',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+        borderRadius: '16px', padding: '10px 12px', margin: '8px 0',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+        border: '1px solid #E5E7EB',
       }}>
         {scoreData.items.map((item, i) => (
           <div key={i} style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-            padding: '3px 4px', fontSize: '13px',
+            padding: '4px 2px', fontSize: '13px',
             borderBottom: i < scoreData.items.length - 1 ? '1px solid #F3F4F6' : 'none',
+            animation: `slide-in 0.3s ease-out ${0.5 + i * 0.08}s both`,
           }}>
-            <span>
-              <span style={{ marginRight: '4px' }}>{item.emoji}</span>
-              <span style={{ color: '#4B5563' }}>{item.label}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ fontSize: '16px' }}>{item.emoji}</span>
+              <span style={{ color: '#4B5563', fontFamily: "'Nunito', sans-serif" }}>{item.label}</span>
             </span>
             <span style={{
-              fontWeight: 700,
+              fontWeight: 700, fontSize: '14px',
               color: item.points >= 0 ? '#059669' : '#DC2626',
             }}>
               {item.points >= 0 ? '+' : ''}{item.points}
@@ -88,33 +141,40 @@ export default function EndScreen({ state, onRestart }) {
       {newAchs.length > 0 && (
         <div style={{
           width: '100%', maxWidth: '300px', background: '#FFFBEB',
-          borderRadius: '12px', padding: '8px 10px', marginBottom: '8px',
+          borderRadius: '16px', padding: '10px 12px', marginBottom: '8px',
           border: '2px solid #FCD34D',
+          animation: 'modal-bounce 0.5s ease-out 1s both',
+          boxShadow: '0 0 12px rgba(251,191,36,0.2)',
         }}>
-          <div style={{ fontSize: '12px', fontWeight: 700, color: '#D97706', marginBottom: '4px' }}>
+          <div style={{ fontSize: '13px', fontWeight: 700, color: '#D97706', marginBottom: '4px' }}>
             🎖️ New Achievements!
           </div>
           {newAchs.map(id => {
             const ach = ACHIEVEMENTS.find(a => a.id === id);
             return ach ? (
-              <div key={id} style={{ fontSize: '12px', color: '#4B5563', padding: '2px 0' }}>
-                {ach.emoji} {ach.name}
+              <div key={id} style={{ fontSize: '13px', color: '#4B5563', padding: '2px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontSize: '16px' }}>{ach.emoji}</span> {ach.name}
               </div>
             ) : null;
           })}
         </div>
       )}
 
-      {/* Play again */}
+      {/* Play again button */}
       <button onClick={onRestart} style={{
-        padding: '12px 32px', borderRadius: '20px', border: 'none',
-        background: state.won ? '#22C55E' : '#3B82F6', color: 'white',
-        fontSize: '18px', fontWeight: 700, cursor: 'pointer',
-        fontFamily: 'Fredoka, Nunito, sans-serif',
-        marginTop: '4px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-      }}>
-        {state.won ? 'Play Again!' : 'Try Again!'}
+        padding: '14px 36px', borderRadius: '20px', border: 'none',
+        background: isWin ? '#22C55E' : '#3B82F6',
+        boxShadow: isWin ? '0 4px 0 #15803D, 0 6px 12px rgba(34,197,94,0.3)' : '0 4px 0 #1D4ED8, 0 6px 12px rgba(59,130,246,0.3)',
+        color: 'white', fontSize: '20px', fontWeight: 700, cursor: 'pointer',
+        fontFamily: "'Fredoka', 'Nunito', sans-serif",
+        marginTop: '6px',
+        transition: 'transform 0.1s',
+        letterSpacing: '0.5px',
+      }}
+        onPointerDown={e => e.currentTarget.style.transform = 'translateY(3px)'}
+        onPointerUp={e => e.currentTarget.style.transform = 'translateY(0)'}
+      >
+        {isWin ? 'Play Again!' : 'Try Again!'}
       </button>
     </div>
   );

@@ -13,21 +13,26 @@ function Countdown({ onDone }) {
     return () => clearTimeout(t);
   }, [count, onDone]);
 
+  const colors = ['#EF4444', '#F59E0B', '#22C55E'];
+
   return (
     <div style={{
       display: 'flex', alignItems: 'center', justifyContent: 'center',
-      height: '100vh', background: 'linear-gradient(180deg, #1a1a4e, #2d4a7e)',
-      fontFamily: 'Fredoka, Nunito, sans-serif',
+      height: '100vh',
+      background: 'linear-gradient(180deg, #0F172A 0%, #1E3A5F 50%, #2563EB 100%)',
+      fontFamily: "'Fredoka', 'Nunito', sans-serif",
     }}>
       <div key={count} style={{
-        fontSize: count > 0 ? '72px' : '48px', fontWeight: 700, color: 'white',
-        animation: 'modal-pop 0.5s ease-out',
+        fontSize: count > 0 ? '96px' : '56px',
+        fontWeight: 700,
+        color: count > 0 ? colors[3 - count] || 'white' : '#22C55E',
+        animation: 'countdown-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        textShadow: count > 0
+          ? `0 0 40px ${colors[3 - count]}88, 0 4px 8px rgba(0,0,0,0.3)`
+          : '0 0 40px rgba(34,197,94,0.5), 0 4px 8px rgba(0,0,0,0.3)',
       }}>
         {count > 0 ? count : 'GO!'}
       </div>
-      <style>{`
-        @keyframes modal-pop { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-      `}</style>
     </div>
   );
 }
@@ -44,38 +49,46 @@ function Tutorial({ onDone }) {
     <div style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       height: '100vh', background: 'linear-gradient(180deg, #EFF6FF, #DBEAFE)',
-      fontFamily: 'Fredoka, Nunito, sans-serif', padding: '24px',
+      fontFamily: "'Fredoka', 'Nunito', sans-serif", padding: '24px',
     }}>
       <div key={slide} style={{
-        fontSize: '48px', marginBottom: '12px',
-        animation: 'modal-pop 0.3s ease-out',
+        fontSize: '56px', marginBottom: '12px',
+        animation: 'icon-bounce 0.5s ease-out',
+        filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
       }}>
         {slides[slide].icon}
       </div>
-      <h2 style={{ fontSize: '22px', color: '#1F2937', margin: '0 0 6px 0' }}>
+      <h2 style={{ fontSize: '24px', color: '#1F2937', margin: '0 0 6px 0' }}>
         {slides[slide].title}
       </h2>
-      <p style={{ fontSize: '14px', color: '#6B7280', textAlign: 'center', margin: '0 0 20px 0' }}>
+      <p style={{
+        fontSize: '15px', color: '#6B7280', textAlign: 'center', margin: '0 0 24px 0',
+        fontFamily: "'Nunito', sans-serif", maxWidth: '260px',
+      }}>
         {slides[slide].text}
       </p>
-      <div style={{ display: 'flex', gap: '6px', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
         {slides.map((_, i) => (
           <div key={i} style={{
-            width: '8px', height: '8px', borderRadius: '50%',
-            background: i === slide ? '#3B82F6' : '#D1D5DB',
+            width: i === slide ? '24px' : '8px', height: '8px', borderRadius: '4px',
+            background: i === slide ? '#3B82F6' : '#CBD5E1',
+            transition: 'all 0.3s',
           }} />
         ))}
       </div>
       <button onClick={() => slide < 2 ? setSlide(s => s + 1) : onDone()} style={{
-        padding: '10px 32px', borderRadius: '20px', border: 'none',
-        background: '#3B82F6', color: 'white', fontSize: '16px', fontWeight: 700,
-        cursor: 'pointer', fontFamily: 'Fredoka, Nunito, sans-serif',
-      }}>
+        padding: '12px 36px', borderRadius: '18px', border: 'none',
+        background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+        boxShadow: '0 4px 0 #1D4ED8, 0 6px 12px rgba(37,99,235,0.3)',
+        color: 'white', fontSize: '18px', fontWeight: 700,
+        cursor: 'pointer', fontFamily: "'Fredoka', sans-serif",
+        transition: 'transform 0.1s',
+      }}
+        onPointerDown={e => e.currentTarget.style.transform = 'translateY(3px)'}
+        onPointerUp={e => e.currentTarget.style.transform = 'translateY(0)'}
+      >
         {slide < 2 ? 'Next' : "Let's Go!"}
       </button>
-      <style>{`
-        @keyframes modal-pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-      `}</style>
     </div>
   );
 }
@@ -83,7 +96,7 @@ function Tutorial({ onDone }) {
 export default function App() {
   const [screen, setScreen] = useState('title');
   const [isFirstPlay, setIsFirstPlay] = useState(true);
-  const { state, initGame, playCard, jumpTime, dismissEvent, completeMiniGame, clearNewFriend } = useGameState();
+  const { state, initGame, playCard, jumpTime, dismissEvent, completeMiniGame, clearNewFriend, markCubsAnnounced } = useGameState();
 
   useEffect(() => {
     const played = localStorage.getItem('pg_gamesPlayed');
@@ -133,6 +146,7 @@ export default function App() {
           dismissEvent={dismissEvent}
           completeMiniGame={completeMiniGame}
           clearNewFriend={clearNewFriend}
+          markCubsAnnounced={markCubsAnnounced}
         />
       )}
       {screen === 'end' && state && (

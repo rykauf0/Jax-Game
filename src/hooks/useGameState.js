@@ -281,6 +281,10 @@ export function useGameState() {
     setState(prev => prev ? { ...prev, newFriend: null } : prev);
   }, []);
 
+  const markCubsAnnounced = useCallback(() => {
+    setState(prev => prev ? { ...prev, cubsAnnounced: true } : prev);
+  }, []);
+
   return {
     state,
     initGame,
@@ -289,5 +293,6 @@ export function useGameState() {
     dismissEvent,
     completeMiniGame,
     clearNewFriend,
+    markCubsAnnounced,
   };
 }
