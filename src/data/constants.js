@@ -19,11 +19,11 @@ export const DIFFICULTY = {
   },
   hard: {
     label: 'Hard',
-    bellyDrainMult: 1.6,
-    tempAccelMult: 1.4,
+    bellyDrainMult: 1.35,
+    tempAccelMult: 1.25,
     starIncomeMult: 0.8,
-    startBelly: 65,
-    startStars: 8,
+    startBelly: 72,
+    startStars: 10,
     badEventMult: 1.5,
   },
 };
@@ -32,7 +32,7 @@ export const INFRA_COOLING = {
   wind: 0.019,
   solar: 0.015,
   ocean: 0.012,
-  carbon: 0.025,
+  carbon: 0.03,
 };
 
 export const INFRA_LABELS = {
@@ -47,10 +47,10 @@ export const START_YEAR = 2025;
 export const YEARS_PER_TURN = 3;
 export const END_YEAR = 2070;
 export const START_TEMP = 1.1;
-export const CUB_TURN = 5;
-export const CUB_BELLY_THRESHOLD = 45;
-export const MINI_GAME_CHANCE = 0.2;
-export const MINI_GAME_START_TURN = 3;
+export const CUB_TURN = 4;
+export const CUB_BELLY_THRESHOLD = 40;
+export const MINI_GAME_CHANCE = 0.55;
+export const MINI_GAME_START_TURN = 2;
 export const MINI_GAME_DURATION = 10;
 
 export const TEMP_LABELS = [

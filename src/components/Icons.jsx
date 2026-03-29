@@ -161,7 +161,24 @@ export function HomeIcon({ size = 16, color = '#92400E' }) {
 export function HelicopterIcon({ size = 16, color = '#DC2626' }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0 }}>
-      <path d="M3 4h18v2H3V4zm4 8h10a2 2 0 012 2v2H5v-2a2 2 0 012-2zm-2 6h14v2H5v-2zm3-8V7h8v3H8z" />
+      {/* Main rotor */}
+      <rect x="2" y="5" width="20" height="2" rx="1" opacity="0.7" />
+      {/* Rotor hub */}
+      <circle cx="12" cy="6" r="1.5" />
+      {/* Rotor mast */}
+      <rect x="11" y="6" width="2" height="3" />
+      {/* Body/cabin */}
+      <ellipse cx="10" cy="13" rx="7" ry="4" />
+      {/* Window */}
+      <ellipse cx="8" cy="12" rx="3" ry="2" fill="white" opacity="0.5" />
+      {/* Tail boom */}
+      <rect x="16" y="11.5" width="6" height="2" rx="1" />
+      {/* Tail rotor */}
+      <ellipse cx="22" cy="10.5" rx="1" ry="3" opacity="0.7" />
+      {/* Skids */}
+      <rect x="5" y="17" width="10" height="1.5" rx="0.75" opacity="0.6" />
+      <rect x="7" y="15.5" width="1.5" height="2" />
+      <rect x="13" y="15.5" width="1.5" height="2" />
     </svg>
   );
 }

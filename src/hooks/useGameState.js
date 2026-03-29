@@ -226,7 +226,9 @@ export function useGameState() {
       const next = { ...prev, currentEvent: null };
 
       // Check for mini-game
-      if (prev.turn >= MINI_GAME_START_TURN && Math.random() < MINI_GAME_CHANCE) {
+      const guaranteedTurns = [3, 6, 9, 12];
+      const shouldMiniGame = guaranteedTurns.includes(prev.turn) || (prev.turn >= MINI_GAME_START_TURN && Math.random() < MINI_GAME_CHANCE);
+      if (shouldMiniGame) {
         const types = ['fish', 'memory', 'snowflake'];
         next.phase = 'miniGame';
         next.miniGameType = types[Math.floor(Math.random() * types.length)];

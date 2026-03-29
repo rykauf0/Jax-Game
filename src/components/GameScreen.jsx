@@ -8,7 +8,7 @@ import { TEMP_LABELS, TOTAL_TURNS, START_YEAR, YEARS_PER_TURN, INFRA_LABELS, FRI
 import { audio, startBgMusic, stopBgMusic } from '../utils/audio';
 import {
   HeartIcon, StarIcon, CalendarIcon, SnowflakeIcon, ThermometerIcon, SunIcon,
-  WindIcon, SolarIcon, WaveIcon, FactoryIcon, MagnifyIcon, ShieldIcon,
+  WindIcon, SolarIcon, WaveIcon, FactoryIcon, MagnifyIcon, ShieldIcon, HomeIcon,
   TrophyIcon, BearIcon, SpeakerIcon, FRIEND_SVGS,
 } from './Icons';
 
@@ -36,6 +36,89 @@ function FriendBanner({ friendId, onDone }) {
         <div style={{ fontSize: '16px', fontWeight: 700, color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}>New Friend!</div>
         <div style={{ fontSize: '12px', color: '#FFFBEB' }}>{friend.name} +50 pts</div>
       </div>
+    </div>
+  );
+}
+
+function AkaSpeech({ state }) {
+  const [msg, setMsg] = useState('');
+  const [visible, setVisible] = useState(false);
+  const prevBelly = useRef(state.belly);
+  const prevTemp = useRef(state.temp);
+
+  useEffect(() => {
+    let text = '';
+    const bellyDiff = state.belly - prevBelly.current;
+    const tempDiff = state.temp - prevTemp.current;
+
+    if (state.phase === 'cards' && state.turn === 1) {
+      text = "Hi! I'm Aka! Help me stay healthy!";
+    } else if (bellyDiff >= 15) {
+      const phrases = ["Yummy! Thank you!", "So full and happy!", "Mmm, delicious!"];
+      text = phrases[Math.floor(Math.random() * phrases.length)];
+    } else if (bellyDiff <= -10) {
+      const phrases = ["I'm getting hungry...", "My tummy rumbles!", "Need more food!"];
+      text = phrases[Math.floor(Math.random() * phrases.length)];
+    } else if (tempDiff <= -0.03) {
+      text = "The ice feels stronger!";
+    } else if (tempDiff >= 0.1) {
+      text = "It's getting warmer...";
+    } else if (state.belly < 25) {
+      text = "I'm so hungry! Help!";
+    } else if (state.hasCubs && !prevBelly.current && state.cubsAlive) {
+      text = "My babies are here!";
+    }
+
+    prevBelly.current = state.belly;
+    prevTemp.current = state.temp;
+
+    if (text) {
+      setMsg(text);
+      setVisible(true);
+      const t = setTimeout(() => setVisible(false), 2500);
+      return () => clearTimeout(t);
+    }
+  }, [state.belly, state.temp, state.phase, state.turn, state.hasCubs]);
+
+  if (!visible || !msg) return null;
+
+  return (
+    <div style={{
+      position: 'absolute', top: '8px', left: '50%', transform: 'translateX(-50%)',
+      background: 'white', borderRadius: '16px', padding: '6px 14px',
+      fontSize: '13px', fontWeight: 700, color: '#1F2937',
+      fontFamily: "'Fredoka', sans-serif",
+      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+      animation: 'modal-bounce 0.3s ease-out',
+      zIndex: 10, whiteSpace: 'nowrap',
+      maxWidth: '90%',
+    }}>
+      {msg}
+      <div style={{
+        position: 'absolute', bottom: '-6px', left: '50%', transform: 'translateX(-50%)',
+        width: 0, height: 0,
+        borderLeft: '6px solid transparent', borderRight: '6px solid transparent',
+        borderTop: '6px solid white',
+      }} />
+    </div>
+  );
+}
+
+function EffectPopup({ effects }) {
+  if (!effects || effects.length === 0) return null;
+  return (
+    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 30, pointerEvents: 'none' }}>
+      {effects.map((eff, i) => (
+        <div key={eff.id} style={{
+          animation: 'float-up 1.2s ease-out forwards',
+          fontSize: '18px', fontWeight: 800, color: eff.color,
+          fontFamily: "'Fredoka', sans-serif",
+          textShadow: '0 2px 4px rgba(0,0,0,0.2), 0 0 8px rgba(255,255,255,0.8)',
+          marginBottom: '4px', textAlign: 'center',
+        }}>
+          {eff.text}
+        </div>
+      ))}
     </div>
   );
 }
@@ -78,6 +161,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
   const [jumpAnim, setJumpAnim] = useState(false);
   const { particles, burst, hearts, snowflakes, sparkle, ring } = useParticles();
   const cardAreaRef = useRef(null);
+  const [effectPopups, setEffectPopups] = useState([]);
 
   const tempInfo = TEMP_LABELS.find(t => state.temp < t.max) || TEMP_LABELS[TEMP_LABELS.length - 1];
   const year = state.year;
@@ -124,6 +208,17 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
       else sparkle({ x: cx, y: cy - 20 });
       ring({ x: cx, y: cy - 20, color: card.effect.belly ? '#F472B6' : '#60A5FA' });
     }
+    // Show effect popup
+    const popups = [];
+    if (card.effect.belly) popups.push({ id: Date.now(), text: `+${card.effect.belly}% belly!`, color: '#F472B6' });
+    if (card.effect.tempChange) popups.push({ id: Date.now() + 1, text: `${card.effect.tempChange < 0 ? '' : '+'}${card.effect.tempChange}° temp`, color: card.effect.tempChange < 0 ? '#60A5FA' : '#EF4444' });
+    if (card.effect.infra) popups.push({ id: Date.now() + 2, text: `Built ${card.effect.infra}!`, color: '#22C55E' });
+    if (card.effect.shield) popups.push({ id: Date.now() + 3, text: 'Shield active!', color: '#10B981' });
+    if (card.effect.stormShield) popups.push({ id: Date.now() + 4, text: 'Storm shield!', color: '#10B981' });
+    if (card.effect.research) popups.push({ id: Date.now() + 5, text: '+1 research!', color: '#8B5CF6' });
+    if (card.effect.stars) popups.push({ id: Date.now() + 6, text: `+${card.effect.stars} stars!`, color: '#F59E0B' });
+    setEffectPopups(popups);
+    setTimeout(() => setEffectPopups([]), 1300);
     playCard(cardId);
   }, [state.hand, playCard, hearts, snowflakes, burst, sparkle, ring]);
 
@@ -213,10 +308,11 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
 
       {/* ===== HABITAT SCENE (slightly shorter to give cards more room) ===== */}
       <div style={{
-        height: '26vh', minHeight: '120px', maxHeight: '200px',
+        height: '30vh', minHeight: '140px', maxHeight: '220px',
         position: 'relative', flexShrink: 0,
       }}>
-        <HabitatScene temp={state.temp} belly={state.belly} hasCubs={state.hasCubs} cubsAlive={state.cubsAlive} />
+        <HabitatScene temp={state.temp} belly={state.belly} hasCubs={state.hasCubs} cubsAlive={state.cubsAlive} friends={state.friends} />
+        <AkaSpeech state={state} />
       </div>
 
       {/* ===== BELLY BAR + TEMP (combined compact row) ===== */}
@@ -256,51 +352,37 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
         </div>
       </div>
 
-      {/* ===== COMPACT INFO ROW (year + ice + score + infra) ===== */}
+      {/* ===== STATUS ROW (year, infra, score) ===== */}
       <div style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '3px 8px', background: '#F8FAFC',
+        padding: '4px 10px', background: '#F8FAFC',
         borderBottom: '1px solid #E2E8F0', flexShrink: 0,
-        fontSize: '11px', fontWeight: 600, gap: '4px',
+        fontSize: '12px', fontWeight: 700, gap: '6px',
       }}>
-        <span style={{ color: '#64748B', fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '2px' }}>
-          <CalendarIcon size={11} /> {year}
+        <span style={{ color: '#3B82F6', fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '3px' }}>
+          <CalendarIcon size={13} /> {year}
         </span>
-        <span style={{ color: '#64748B', fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '2px' }}>
-          {state.temp < 1.8 ? <SnowflakeIcon size={12} /> : state.temp < 2.5 ? <WaveIcon size={12} color="#60A5FA" /> : <SunIcon size={12} color="#EF4444" />}
-          {state.temp < 1.8 ? ' Ice' : state.temp < 2.5 ? ' Thin' : ' Bare'}
+        <span style={{ color: tempInfo.color, fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '3px' }}>
+          {state.temp < 1.8 ? <SnowflakeIcon size={14} /> : state.temp < 2.5 ? <WaveIcon size={14} color={tempInfo.color} /> : <SunIcon size={14} color="#EF4444" />}
+          {(+state.temp).toFixed(1)}°C
         </span>
-        {/* Infra icons inline */}
-        <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
+        {/* Infra + shields */}
+        <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
           {Object.entries(INFRA_LABELS).map(([key, info]) => {
             const IconMap = { wind: WindIcon, solar: SolarIcon, wave: WaveIcon, factory: FactoryIcon };
             const IC = IconMap[info.iconType];
             return state.infra[key] > 0 ? (
               <span key={key} style={{ display: 'flex', alignItems: 'center', gap: '1px' }}>
-                {IC && <IC size={12} />}<span style={{ fontWeight: 800, fontSize: '10px', color: '#3B82F6', fontFamily: "'Fredoka', sans-serif" }}>{state.infra[key]}</span>
+                {IC && <IC size={14} />}<span style={{ fontWeight: 800, fontSize: '11px', color: '#3B82F6', fontFamily: "'Fredoka', sans-serif" }}>{state.infra[key]}</span>
               </span>
             ) : null;
           })}
-          {state.researchLevel > 0 && <span style={{ display: 'flex', alignItems: 'center', gap: '1px' }}><MagnifyIcon size={12} /><span style={{ fontWeight: 800, fontSize: '10px', color: '#8B5CF6' }}>{state.researchLevel}</span></span>}
-          {state.shield && <ShieldIcon size={12} />}
+          {state.researchLevel > 0 && <span style={{ display: 'flex', alignItems: 'center', gap: '1px' }}><MagnifyIcon size={14} /><span style={{ fontWeight: 800, fontSize: '11px', color: '#8B5CF6' }}>{state.researchLevel}</span></span>}
+          {state.shield && <ShieldIcon size={14} color="#10B981" />}
+          {state.stormShield && <HomeIcon size={14} color="#92400E" />}
         </div>
-        {/* Friends */}
-        <div style={{ display: 'flex', gap: '1px', alignItems: 'center' }}>
-          {FRIENDS.map(f => {
-            const FriendIcon = FRIEND_SVGS[f.id];
-            return (
-              <span key={f.id} style={{
-                opacity: state.friends.includes(f.id) ? 1 : 0.15,
-                filter: state.friends.includes(f.id) ? 'none' : 'grayscale(1)',
-                display: 'flex', alignItems: 'center',
-              }}>
-                {FriendIcon && <FriendIcon size={14} />}
-              </span>
-            );
-          })}
-        </div>
-        <span style={{ color: '#B45309', fontWeight: 800, fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '2px' }}>
-          <TrophyIcon size={12} /> {approxScore}
+        <span style={{ color: '#B45309', fontWeight: 800, fontFamily: "'Fredoka', sans-serif", display: 'flex', alignItems: 'center', gap: '3px' }}>
+          <TrophyIcon size={14} /> {approxScore}
         </span>
       </div>
 
@@ -317,7 +399,9 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
           justifyContent: 'center', alignItems: 'center',
           padding: '4px 0',
           minHeight: 0,
+          position: 'relative',
         }}>
+          <EffectPopup effects={effectPopups} />
           {state.phase === 'cards' && state.hand.length > 0 && (
             <>
               {/* Helper text */}

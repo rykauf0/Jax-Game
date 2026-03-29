@@ -8,6 +8,7 @@ export const CARDS = [
     iconType: 'fish',
     effectDesc: '+20% belly',
     effect: { belly: 20 },
+    learnText: 'Polar bears need lots of seal and fish to stay healthy in the cold!',
   },
   {
     id: 'seals',
@@ -17,6 +18,7 @@ export const CARDS = [
     iconType: 'seal',
     effectDesc: '+25% belly',
     effect: { belly: 25 },
+    learnText: 'Seals are polar bears\' favorite food! They hunt them on sea ice.',
   },
   {
     id: 'fish_farm',
@@ -26,6 +28,7 @@ export const CARDS = [
     iconType: 'fish',
     effectDesc: '+30% belly',
     effect: { belly: 30 },
+    learnText: 'Fish farms can provide food without over-fishing the ocean!',
   },
 
   // CLEAN ENERGY CARDS
@@ -37,6 +40,7 @@ export const CARDS = [
     iconType: 'wind',
     effectDesc: 'Permanent cooling',
     effect: { infra: 'wind' },
+    learnText: 'Wind turbines make clean energy without burning fossil fuels!',
   },
   {
     id: 'solar',
@@ -46,6 +50,7 @@ export const CARDS = [
     iconType: 'solar',
     effectDesc: 'Permanent cooling',
     effect: { infra: 'solar' },
+    learnText: 'The sun gives us free clean energy! Solar panels catch it.',
   },
   {
     id: 'ocean',
@@ -55,26 +60,29 @@ export const CARDS = [
     iconType: 'wave',
     effectDesc: 'Cooling + food',
     effect: { infra: 'ocean' },
+    learnText: 'Cleaning the ocean helps fish, whales, and polar bears!',
   },
   {
     id: 'carbon',
     name: 'CO2 Cleaner!',
-    cost: 7,
+    cost: 5,
     rarity: 'rare',
     iconType: 'factory',
-    effectDesc: 'Strong cooling',
+    effectDesc: 'Best cooling!',
     effect: { infra: 'carbon' },
+    learnText: 'Special machines can pull CO2 right out of the air!',
   },
 
   // PROTECTION CARDS
   {
     id: 'ice_bridge',
     name: 'Ice Bridge!',
-    cost: 3,
+    cost: 2,
     rarity: 'common',
     iconType: 'ice',
-    effectDesc: '+12% belly + cool',
-    effect: { belly: 12, tempChange: -0.05 },
+    effectDesc: '+15% belly, cools ice',
+    effect: { belly: 15, tempChange: -0.05 },
+    learnText: 'When ice melts, bears need bridges to reach their food!',
   },
   {
     id: 'sanctuary',
@@ -84,6 +92,7 @@ export const CARDS = [
     iconType: 'shield',
     effectDesc: 'Block bad event',
     effect: { shield: true },
+    learnText: 'Protected areas keep animals safe from harm!',
   },
   {
     id: 'den',
@@ -91,8 +100,9 @@ export const CARDS = [
     cost: 3,
     rarity: 'uncommon',
     iconType: 'home',
-    effectDesc: '+10% belly + shield',
-    effect: { belly: 10, stormShield: true },
+    effectDesc: '+15% belly + storm shield',
+    effect: { belly: 15, stormShield: true },
+    learnText: 'Mama bears dig snow dens to keep their babies warm!',
   },
 
   // SCIENCE & DIPLOMACY
@@ -104,6 +114,7 @@ export const CARDS = [
     iconType: 'magnify',
     effectDesc: '+stars per turn',
     effect: { research: 1 },
+    learnText: 'Scientists study ice cores to learn about Earth\'s climate history!',
   },
   {
     id: 'rescue',
@@ -113,24 +124,27 @@ export const CARDS = [
     iconType: 'helicopter',
     effectDesc: '+15% belly + 1 star',
     effect: { belly: 15, stars: 1 },
+    learnText: 'Rangers help injured or stranded polar bears get to safety!',
   },
   {
     id: 'treaty',
     name: 'Climate Deal!',
-    cost: 6,
+    cost: 7,
     rarity: 'rare',
     iconType: 'globe',
-    effectDesc: 'Cool + stars + belly',
+    effectDesc: 'World works together!',
     effect: { belly: 10, stars: 2, tempChange: -0.08 },
+    learnText: 'Countries working together is the best way to fight climate change!',
   },
   {
     id: 'trees',
     name: 'Plant Forest!',
-    cost: 3,
+    cost: 2,
     rarity: 'uncommon',
     iconType: 'tree',
-    effectDesc: 'Cooling + 1 star',
-    effect: { tempChange: -0.04, stars: 1 },
+    effectDesc: 'Trees cool Earth!',
+    effect: { tempChange: -0.06, stars: 1 },
+    learnText: 'Trees breathe in CO2 and breathe out oxygen — nature\'s air cleaners!',
   },
 ];
 

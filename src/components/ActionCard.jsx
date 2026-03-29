@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   FishIcon, SealHuntIcon, WindIcon, SolarIcon, WaveIcon, FactoryIcon,
   IceIcon, ShieldIcon, HomeIcon, MagnifyIcon, HelicopterIcon, GlobeIcon,
@@ -44,14 +44,29 @@ const rarityStyles = {
 
 export default function ActionCard({ card, canAfford, onPlay }) {
   const [pressed, setPressed] = useState(false);
+  const [showLearn, setShowLearn] = useState(false);
+  const longPressTimer = useRef(null);
   const style = rarityStyles[card.rarity];
 
-  const handleDown = () => { if (canAfford) setPressed(true); };
+  const handleDown = () => {
+    if (canAfford) setPressed(true);
+    if (card.learnText) {
+      longPressTimer.current = setTimeout(() => {
+        setShowLearn(true);
+        setPressed(false); // cancel the press so we don't play the card
+      }, 500);
+    }
+  };
   const handleUp = () => {
+    if (longPressTimer.current) { clearTimeout(longPressTimer.current); longPressTimer.current = null; }
+    if (showLearn) { setShowLearn(false); return; }
     setPressed(false);
     if (canAfford) onPlay(card.id);
   };
-  const handleLeave = () => setPressed(false);
+  const handleLeave = () => {
+    setPressed(false);
+    if (longPressTimer.current) { clearTimeout(longPressTimer.current); longPressTimer.current = null; }
+  };
 
   return (
     <button
@@ -147,6 +162,21 @@ export default function ActionCard({ card, canAfford, onPlay }) {
       }}>
         {card.cost} <StarIcon size={13} />
       </span>
+
+      {showLearn && card.learnText && (
+        <div style={{
+          position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: 'rgba(59,130,246,0.95)', borderRadius: '16px', padding: '8px',
+          zIndex: 10,
+        }} onClick={(e) => { e.stopPropagation(); setShowLearn(false); }}>
+          <span style={{
+            fontSize: '11px', color: 'white', fontWeight: 600, lineHeight: 1.3,
+            textAlign: 'center', fontFamily: "'Nunito', sans-serif",
+          }}>
+            {card.learnText}
+          </span>
+        </div>
+      )}
     </button>
   );
 }

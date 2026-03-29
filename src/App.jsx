@@ -4,6 +4,7 @@ import GameScreen from './components/GameScreen';
 import EndScreen from './components/EndScreen';
 import { useGameState } from './hooks/useGameState';
 import { stopBgMusic } from './utils/audio';
+import { BearIcon, StarIcon, CalendarIcon } from './components/Icons';
 
 function Countdown({ onDone }) {
   const [count, setCount] = useState(3);
@@ -40,9 +41,9 @@ function Countdown({ onDone }) {
 function Tutorial({ onDone }) {
   const [slide, setSlide] = useState(0);
   const slides = [
-    { icon: '🐻‍❄️', title: 'Meet Aka!', text: 'Keep her belly full and her ice cold!' },
-    { icon: '🃏', title: 'Play Cards!', text: 'Tap cards to feed Aka or build clean energy!' },
-    { icon: '⏩', title: 'Jump Forward!', text: 'Jump 3 years and see what happens!' },
+    { iconEl: <BearIcon size={48} color="#F5F0E8" />, title: 'Meet Aka!', text: 'Keep her belly full and her ice cold!' },
+    { iconEl: <StarIcon size={48} color="#FBBF24" />, title: 'Play Cards!', text: 'Tap cards to feed Aka or build clean energy! Hold a card to learn facts!' },
+    { iconEl: <CalendarIcon size={48} color="#3B82F6" />, title: 'Jump Forward!', text: 'Jump 3 years to see what happens next!' },
   ];
 
   return (
@@ -52,11 +53,12 @@ function Tutorial({ onDone }) {
       fontFamily: "'Fredoka', 'Nunito', sans-serif", padding: '24px',
     }}>
       <div key={slide} style={{
-        fontSize: '56px', marginBottom: '12px',
+        marginBottom: '12px',
         animation: 'icon-bounce 0.5s ease-out',
         filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))',
+        display: 'flex', justifyContent: 'center',
       }}>
-        {slides[slide].icon}
+        {slides[slide].iconEl}
       </div>
       <h2 style={{ fontSize: '24px', color: '#1F2937', margin: '0 0 6px 0' }}>
         {slides[slide].title}
