@@ -153,7 +153,7 @@ function GameItem({ item, onTap }) {
 // ====== MEMORY MATCH GAME ======
 function MemoryMatchGame({ onComplete }) {
   const [phase, setPhase] = useState('intro');
-  const [timeLeft, setTimeLeft] = useState(MINI_GAME_DURATION + 5); // 15s for memory
+  const [timeLeft, setTimeLeft] = useState(MINI_GAME_DURATION + 10); // 20s for memory
   const [cards, setCards] = useState([]);
   const [flipped, setFlipped] = useState([]);
   const [matched, setMatched] = useState([]);
@@ -240,16 +240,16 @@ function MemoryMatchGame({ onComplete }) {
 
   useEffect(() => {
     if (phase !== 'results') return;
-    const id = setTimeout(() => onComplete(scoreRef.current, 'memory'), 1500);
+    const id = setTimeout(() => onComplete(scoreRef.current * 2, 'memory'), 1500);
     return () => clearTimeout(id);
   }, [phase, onComplete]);
 
   if (phase === 'intro') {
-    return <MiniGameIntro icon={<MatchIcon />} title="Memory Match!" desc="Find the matching pairs!" duration={MINI_GAME_DURATION + 5} onStart={startGame} />;
+    return <MiniGameIntro icon={<MatchIcon />} title="Memory Match!" desc="Find the matching pairs!" duration={MINI_GAME_DURATION + 10} onStart={startGame} />;
   }
 
   if (phase === 'results') {
-    return <MiniGameResults score={score} />;
+    return <MiniGameResults score={score * 2} />;
   }
 
   return (
@@ -257,7 +257,7 @@ function MemoryMatchGame({ onComplete }) {
       position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column',
       background: 'linear-gradient(180deg, #ECFDF5 0%, #D1FAE5 100%)', zIndex: 60,
     }}>
-      <MiniGameHeader title="Memory Match!" timeLeft={timeLeft} score={score} />
+      <MiniGameHeader title="Memory Match!" timeLeft={timeLeft} score={score * 2} />
       <div style={{
         flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: '12px',

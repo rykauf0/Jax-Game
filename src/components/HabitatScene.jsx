@@ -213,14 +213,14 @@ export default function HabitatScene({ temp, belly, hasCubs, cubsAlive, friends 
       {friends && friends.length > 0 && (
         <g>
           {friends.includes('seal') && (
-            <g transform={`translate(${iceRx > 90 ? 60 : 70}, ${waterY - 18}) scale(0.35)`} opacity="0.9">
+            <g transform={`translate(${iceRx > 90 ? 60 : 70}, ${waterY - 18}) scale(0.5)`} opacity="0.9">
               <ellipse cx="0" cy="0" rx="12" ry="5" fill="#94A3B8" />
               <circle cx="-6" cy="-5" r="5" fill="#B0BEC5" />
               <circle cx="-8" cy="-6" r="1" fill="#1F2937" />
             </g>
           )}
           {friends.includes('penguin') && (
-            <g transform={`translate(${iceRx > 90 ? 230 : 210}, ${waterY - 16}) scale(0.35)`} opacity="0.9">
+            <g transform={`translate(${iceRx > 90 ? 230 : 210}, ${waterY - 16}) scale(0.5)`} opacity="0.9">
               <ellipse cx="0" cy="0" rx="6" ry="9" fill="#1F2937" />
               <ellipse cx="0" cy="2" rx="4" ry="6" fill="white" />
               <circle cx="-2" cy="-3" r="1" fill="white" />
@@ -229,7 +229,7 @@ export default function HabitatScene({ temp, belly, hasCubs, cubsAlive, friends 
             </g>
           )}
           {friends.includes('owl') && (
-            <g transform={`translate(${iceRx > 90 ? 40 : 55}, ${waterY - 45}) scale(0.3)`} opacity="0.85">
+            <g transform={`translate(${iceRx > 90 ? 40 : 55}, ${waterY - 45}) scale(0.45)`} opacity="0.85">
               <ellipse cx="0" cy="0" rx="7" ry="8" fill="#E8E4DD" />
               <circle cx="-3" cy="-3" r="3" fill="white" />
               <circle cx="3" cy="-3" r="3" fill="white" />
@@ -238,7 +238,7 @@ export default function HabitatScene({ temp, belly, hasCubs, cubsAlive, friends 
             </g>
           )}
           {friends.includes('fox') && (
-            <g transform={`translate(${iceRx > 90 ? 245 : 220}, ${waterY - 22}) scale(0.3)`} opacity="0.9">
+            <g transform={`translate(${iceRx > 90 ? 245 : 220}, ${waterY - 22}) scale(0.45)`} opacity="0.9">
               <ellipse cx="0" cy="2" rx="7" ry="5" fill="#E8E4DD" />
               <circle cx="0" cy="-4" r="5" fill="#F5F0E8" />
               <polygon points="-4,-8 -3,-2 -6,-3" fill="#E8E4DD" />
@@ -249,14 +249,14 @@ export default function HabitatScene({ temp, belly, hasCubs, cubsAlive, friends 
             </g>
           )}
           {friends.includes('narwhal') && (
-            <g transform={`translate(${iceRx > 90 ? 80 : 90}, ${waterY + 12}) scale(0.3)`} opacity="0.8">
+            <g transform={`translate(${iceRx > 90 ? 80 : 90}, ${waterY + 12}) scale(0.45)`} opacity="0.8">
               <ellipse cx="0" cy="0" rx="10" ry="4" fill="#93C5FD" />
               <line x1="-10" y1="-3" x2="-16" y2="-10" stroke="#FBBF24" strokeWidth="1.5" strokeLinecap="round" />
               <circle cx="-6" cy="-1" r="1" fill="#1F2937" />
             </g>
           )}
           {friends.includes('eagle') && (
-            <g transform={`translate(${iceRx > 90 ? 200 : 180}, ${waterY - 55}) scale(0.3)`} opacity="0.8">
+            <g transform={`translate(${iceRx > 90 ? 200 : 180}, ${waterY - 55}) scale(0.45)`} opacity="0.8">
               <ellipse cx="0" cy="0" rx="5" ry="5" fill="#92400E" />
               <circle cx="0" cy="-5" r="3.5" fill="#F5F0E8" />
               <polygon points="0,-3 -1,0 1,0" fill="#F59E0B" />

@@ -92,7 +92,7 @@ export default function ActionCard({ card, canAfford, onPlay }) {
         transform: pressed ? 'translateY(4px) scale(0.96)' : 'translateY(0) scale(1)',
         transition: 'transform 0.1s, box-shadow 0.1s',
         width: '100%',
-        minHeight: '115px',
+        minHeight: '120px',
         fontFamily: "'Nunito', sans-serif",
         position: 'relative',
         overflow: 'hidden',
@@ -127,12 +127,12 @@ export default function ActionCard({ card, canAfford, onPlay }) {
         filter: canAfford ? 'drop-shadow(0 2px 3px rgba(0,0,0,0.1))' : 'grayscale(0.7)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
-        {CARD_ICONS[card.iconType] ? CARD_ICONS[card.iconType](36) : <FishIcon size={36} />}
+        {CARD_ICONS[card.iconType] ? CARD_ICONS[card.iconType](40) : <FishIcon size={40} />}
       </span>
 
       {/* Name — bold and readable */}
       <span style={{
-        fontSize: '13px', fontWeight: 800, color: canAfford ? '#1F2937' : '#9CA3AF',
+        fontSize: '14px', fontWeight: 800, color: canAfford ? '#1F2937' : '#9CA3AF',
         textAlign: 'center', lineHeight: 1.15,
         fontFamily: "'Fredoka', 'Nunito', sans-serif",
       }}>
@@ -141,7 +141,7 @@ export default function ActionCard({ card, canAfford, onPlay }) {
 
       {/* Effect description */}
       <span style={{
-        fontSize: '10px', color: canAfford ? '#6B7280' : '#9CA3AF',
+        fontSize: '11px', color: canAfford ? '#6B7280' : '#9CA3AF',
         lineHeight: 1.1, textAlign: 'center',
       }}>
         {card.effectDesc}

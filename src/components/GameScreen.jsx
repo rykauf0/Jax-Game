@@ -34,7 +34,7 @@ function FriendBanner({ friendId, onDone }) {
       </span>
       <div>
         <div style={{ fontSize: '16px', fontWeight: 700, color: 'white', textShadow: '0 1px 2px rgba(0,0,0,0.15)' }}>New Friend!</div>
-        <div style={{ fontSize: '12px', color: '#FFFBEB' }}>{friend.name} +50 pts</div>
+        <div style={{ fontSize: '12px', color: '#FFFBEB' }}>{friend.name} joined Aka on the ice!</div>
       </div>
     </div>
   );
@@ -210,7 +210,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
     }
     // Show effect popup
     const popups = [];
-    if (card.effect.belly) popups.push({ id: Date.now(), text: `+${card.effect.belly}% belly!`, color: '#F472B6' });
+    if (card.effect.belly) popups.push({ id: Date.now(), text: `+${card.effect.belly} food!`, color: '#F472B6' });
     if (card.effect.tempChange) popups.push({ id: Date.now() + 1, text: `${card.effect.tempChange < 0 ? '' : '+'}${card.effect.tempChange}° temp`, color: card.effect.tempChange < 0 ? '#60A5FA' : '#EF4444' });
     if (card.effect.infra) popups.push({ id: Date.now() + 2, text: `Built ${card.effect.infra}!`, color: '#22C55E' });
     if (card.effect.shield) popups.push({ id: Date.now() + 3, text: 'Shield active!', color: '#10B981' });
@@ -378,7 +378,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
         <div ref={cardAreaRef} style={{
           flex: 1, display: 'flex', flexDirection: 'column',
           justifyContent: 'center', alignItems: 'center',
-          padding: '4px 0',
+          padding: '2px 0',
           minHeight: 0,
           position: 'relative',
         }}>
@@ -396,13 +396,13 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
               </div>
               <div style={{
                 display: 'flex', gap: '10px', justifyContent: 'center',
-                width: '100%', maxWidth: '380px',
+                width: '100%', maxWidth: '480px',
               }}>
                 {state.hand.map((card, i) => (
                   <div key={card.id} style={{
                     animation: `card-deal 0.3s ease-out ${i * 0.08}s both`,
                     flex: '1 1 0', display: 'flex', justifyContent: 'center',
-                    maxWidth: '140px',
+                    maxWidth: '160px',
                   }}>
                     <ActionCard
                       card={card}
@@ -479,7 +479,7 @@ export default function GameScreen({ state, playCard, jumpTime, dismissEvent, co
                 : '0 4px 0 #1D4ED8, 0 6px 16px rgba(37,99,235,0.3)';
             }}
           >
-            Jump 3 Years
+            Jump to {year + 3}
           </button>
         )}
       </div>

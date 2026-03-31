@@ -136,7 +136,7 @@ export default function App() {
   }, [state?.phase]);
 
   return (
-    <div style={{ maxWidth: '430px', margin: '0 auto', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ maxWidth: '600px', margin: '0 auto', height: '100dvh', position: 'relative', overflow: 'hidden' }}>
       {screen === 'title' && <TitleScreen onStart={handleStart} />}
       {screen === 'countdown' && <Countdown onDone={handleCountdownDone} />}
       {screen === 'tutorial' && <Tutorial onDone={handleTutorialDone} />}

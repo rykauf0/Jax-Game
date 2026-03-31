@@ -128,7 +128,7 @@ export default function PolarBear({ belly, hasCubs, cubsAlive }) {
         <>
           {/* Cub 1 — slightly to the right */}
           <g className="bear-mood-happy" style={{ transformOrigin: '160px 130px' }}>
-            <g transform="translate(145, 100) scale(0.35)">
+            <g transform="translate(135, 85) scale(0.45)">
               <ellipse cx="100" cy="105" rx="36" ry="30" fill="#FAF6F0" />
               <ellipse cx="100" cy="108" rx="20" ry="16" fill="white" opacity="0.3" />
               <ellipse cx="82" cy="128" rx="10" ry="11" fill="#FAF6F0" />
@@ -151,7 +151,7 @@ export default function PolarBear({ belly, hasCubs, cubsAlive }) {
           </g>
           {/* Cub 2 — slightly behind and to the far right */}
           <g className="bear-mood-okay" style={{ transformOrigin: '195px 135px' }}>
-            <g transform="translate(180, 108) scale(0.3)">
+            <g transform="translate(165, 95) scale(0.4)">
               <ellipse cx="100" cy="105" rx="34" ry="28" fill="#F5F0E8" />
               <ellipse cx="100" cy="108" rx="18" ry="14" fill="white" opacity="0.3" />
               <ellipse cx="84" cy="126" rx="9" ry="10" fill="#F5F0E8" />
