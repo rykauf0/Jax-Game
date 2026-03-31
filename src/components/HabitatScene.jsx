@@ -213,55 +213,70 @@ export default function HabitatScene({ temp, belly, hasCubs, cubsAlive, friends 
       {friends && friends.length > 0 && (
         <g>
           {friends.includes('seal') && (
-            <g transform={`translate(${iceRx > 90 ? 60 : 70}, ${waterY - 18}) scale(0.5)`} opacity="0.9">
+            <g transform={`translate(${iceRx > 90 ? 55 : 65}, ${waterY - 20}) scale(0.7)`} opacity="0.95">
               <ellipse cx="0" cy="0" rx="12" ry="5" fill="#94A3B8" />
               <circle cx="-6" cy="-5" r="5" fill="#B0BEC5" />
-              <circle cx="-8" cy="-6" r="1" fill="#1F2937" />
+              <circle cx="-8" cy="-6" r="1.2" fill="#1F2937" />
+              <line x1="-12" y1="-2" x2="-16" y2="-4" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" />
+              <line x1="6" y1="-2" x2="10" y2="-4" stroke="#94A3B8" strokeWidth="1.5" strokeLinecap="round" />
             </g>
           )}
           {friends.includes('penguin') && (
-            <g transform={`translate(${iceRx > 90 ? 230 : 210}, ${waterY - 16}) scale(0.5)`} opacity="0.9">
+            <g transform={`translate(${iceRx > 90 ? 235 : 215}, ${waterY - 18}) scale(0.7)`} opacity="0.95">
               <ellipse cx="0" cy="0" rx="6" ry="9" fill="#1F2937" />
               <ellipse cx="0" cy="2" rx="4" ry="6" fill="white" />
-              <circle cx="-2" cy="-3" r="1" fill="white" />
-              <circle cx="2" cy="-3" r="1" fill="white" />
-              <polygon points="0,-1 -1,1 1,1" fill="#F59E0B" />
+              <circle cx="-2" cy="-3" r="1.2" fill="white" />
+              <circle cx="2" cy="-3" r="1.2" fill="white" />
+              <circle cx="-2" cy="-3" r="0.5" fill="#1F2937" />
+              <circle cx="2" cy="-3" r="0.5" fill="#1F2937" />
+              <polygon points="0,-1 -1.5,1.5 1.5,1.5" fill="#F59E0B" />
+              <ellipse cx="0" cy="9" rx="3" ry="1" fill="#F59E0B" />
             </g>
           )}
           {friends.includes('owl') && (
-            <g transform={`translate(${iceRx > 90 ? 40 : 55}, ${waterY - 45}) scale(0.45)`} opacity="0.85">
+            <g transform={`translate(${iceRx > 90 ? 35 : 50}, ${waterY - 50}) scale(0.6)`} opacity="0.9">
               <ellipse cx="0" cy="0" rx="7" ry="8" fill="#E8E4DD" />
-              <circle cx="-3" cy="-3" r="3" fill="white" />
-              <circle cx="3" cy="-3" r="3" fill="white" />
+              <circle cx="-3" cy="-3" r="3.5" fill="white" stroke="#D4CBC0" strokeWidth="0.5" />
+              <circle cx="3" cy="-3" r="3.5" fill="white" stroke="#D4CBC0" strokeWidth="0.5" />
               <circle cx="-3" cy="-3" r="1.5" fill="#F59E0B" />
               <circle cx="3" cy="-3" r="1.5" fill="#F59E0B" />
+              <circle cx="-3" cy="-3" r="0.7" fill="#1F2937" />
+              <circle cx="3" cy="-3" r="0.7" fill="#1F2937" />
+              <polygon points="0,0 -1,3 1,3" fill="#F59E0B" />
+              <polygon points="-5,-8 -3,-2 -7,-3" fill="#D4CBC0" />
+              <polygon points="5,-8 3,-2 7,-3" fill="#D4CBC0" />
             </g>
           )}
           {friends.includes('fox') && (
-            <g transform={`translate(${iceRx > 90 ? 245 : 220}, ${waterY - 22}) scale(0.45)`} opacity="0.9">
+            <g transform={`translate(${iceRx > 90 ? 248 : 225}, ${waterY - 24}) scale(0.6)`} opacity="0.95">
               <ellipse cx="0" cy="2" rx="7" ry="5" fill="#E8E4DD" />
-              <circle cx="0" cy="-4" r="5" fill="#F5F0E8" />
-              <polygon points="-4,-8 -3,-2 -6,-3" fill="#E8E4DD" />
-              <polygon points="4,-8 3,-2 6,-3" fill="#E8E4DD" />
-              <circle cx="-2" cy="-5" r="1" fill="#1F2937" />
-              <circle cx="2" cy="-5" r="1" fill="#1F2937" />
-              <ellipse cx="0" cy="4" rx="4" ry="2" fill="white" />
+              <circle cx="0" cy="-4" r="5.5" fill="#F5F0E8" />
+              <polygon points="-4,-9 -3,-2 -6.5,-3.5" fill="#E8E4DD" />
+              <polygon points="4,-9 3,-2 6.5,-3.5" fill="#E8E4DD" />
+              <circle cx="-2" cy="-5" r="1.2" fill="#1F2937" />
+              <circle cx="2" cy="-5" r="1.2" fill="#1F2937" />
+              <circle cx="0" cy="-2.5" r="0.8" fill="#1F2937" />
+              <ellipse cx="0" cy="5" rx="4.5" ry="2.5" fill="white" />
             </g>
           )}
           {friends.includes('narwhal') && (
-            <g transform={`translate(${iceRx > 90 ? 80 : 90}, ${waterY + 12}) scale(0.45)`} opacity="0.8">
-              <ellipse cx="0" cy="0" rx="10" ry="4" fill="#93C5FD" />
-              <line x1="-10" y1="-3" x2="-16" y2="-10" stroke="#FBBF24" strokeWidth="1.5" strokeLinecap="round" />
-              <circle cx="-6" cy="-1" r="1" fill="#1F2937" />
+            <g transform={`translate(${iceRx > 90 ? 75 : 85}, ${waterY + 10}) scale(0.6)`} opacity="0.85">
+              <ellipse cx="0" cy="0" rx="12" ry="5" fill="#93C5FD" />
+              <ellipse cx="5" cy="0" rx="3" ry="2.5" fill="#60A5FA" />
+              <line x1="-12" y1="-3" x2="-20" y2="-12" stroke="#FBBF24" strokeWidth="2" strokeLinecap="round" />
+              <circle cx="-7" cy="-1" r="1.2" fill="#1F2937" />
+              <path d="M8 -2 Q10 -5 12 -2" fill="#93C5FD" />
             </g>
           )}
           {friends.includes('eagle') && (
-            <g transform={`translate(${iceRx > 90 ? 200 : 180}, ${waterY - 55}) scale(0.45)`} opacity="0.8">
+            <g transform={`translate(${iceRx > 90 ? 195 : 175}, ${waterY - 60}) scale(0.55)`} opacity="0.85">
               <ellipse cx="0" cy="0" rx="5" ry="5" fill="#92400E" />
-              <circle cx="0" cy="-5" r="3.5" fill="#F5F0E8" />
-              <polygon points="0,-3 -1,0 1,0" fill="#F59E0B" />
-              <path d="M-12,-2 Q-5,-5 -3,0" fill="#92400E" />
-              <path d="M12,-2 Q5,-5 3,0" fill="#92400E" />
+              <circle cx="0" cy="-5" r="4" fill="#F5F0E8" />
+              <circle cx="-1.5" cy="-5.5" r="1" fill="#1F2937" />
+              <circle cx="1.5" cy="-5.5" r="1" fill="#1F2937" />
+              <polygon points="0,-3 -1.5,0 1.5,0" fill="#F59E0B" />
+              <path d="M-14,-1 Q-7,-5 -4,0" fill="#92400E" />
+              <path d="M14,-1 Q7,-5 4,0" fill="#92400E" />
             </g>
           )}
         </g>

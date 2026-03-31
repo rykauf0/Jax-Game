@@ -123,17 +123,19 @@ export default function PolarBear({ belly, hasCubs, cubsAlive }) {
         </g>
       </g>
 
-      {/* CUBS - 2 baby bears */}
+      {/* CUBS - 2 baby bears with subtle shadow for visibility on ice */}
       {hasCubs && cubsAlive && (
         <>
-          {/* Cub 1 — slightly to the right */}
+          {/* Cub 1 — to the right of mama */}
           <g className="bear-mood-happy" style={{ transformOrigin: '160px 130px' }}>
-            <g transform="translate(135, 85) scale(0.45)">
-              <ellipse cx="100" cy="105" rx="36" ry="30" fill="#FAF6F0" />
+            <g transform="translate(130, 80) scale(0.5)">
+              {/* Subtle shadow under cub */}
+              <ellipse cx="100" cy="145" rx="25" ry="6" fill="#B0C4DE" opacity="0.3" />
+              <ellipse cx="100" cy="105" rx="36" ry="30" fill="#FAF6F0" stroke="#E0D8CC" strokeWidth="0.5" />
               <ellipse cx="100" cy="108" rx="20" ry="16" fill="white" opacity="0.3" />
               <ellipse cx="82" cy="128" rx="10" ry="11" fill="#FAF6F0" />
               <ellipse cx="118" cy="128" rx="10" ry="11" fill="#FAF6F0" />
-              <ellipse cx="100" cy="65" rx="24" ry="22" fill="#FAFAF5" />
+              <ellipse cx="100" cy="65" rx="24" ry="22" fill="#FAFAF5" stroke="#E0D8CC" strokeWidth="0.5" />
               <circle cx="82" cy="48" r="8" fill="#FAF6F0" />
               <circle cx="82" cy="48" r="5" fill="#FFCDD2" />
               <circle cx="118" cy="48" r="8" fill="#FAF6F0" />
@@ -149,14 +151,16 @@ export default function PolarBear({ belly, hasCubs, cubsAlive }) {
               <path d="M95 74 Q100 79 105 74" stroke="#2D2D2D" strokeWidth="1.3" fill="none" strokeLinecap="round" />
             </g>
           </g>
-          {/* Cub 2 — slightly behind and to the far right */}
+          {/* Cub 2 — slightly behind */}
           <g className="bear-mood-okay" style={{ transformOrigin: '195px 135px' }}>
-            <g transform="translate(165, 95) scale(0.4)">
-              <ellipse cx="100" cy="105" rx="34" ry="28" fill="#F5F0E8" />
+            <g transform="translate(160, 88) scale(0.44)">
+              {/* Subtle shadow under cub */}
+              <ellipse cx="100" cy="140" rx="22" ry="5" fill="#B0C4DE" opacity="0.25" />
+              <ellipse cx="100" cy="105" rx="34" ry="28" fill="#F5F0E8" stroke="#D8D0C4" strokeWidth="0.5" />
               <ellipse cx="100" cy="108" rx="18" ry="14" fill="white" opacity="0.3" />
               <ellipse cx="84" cy="126" rx="9" ry="10" fill="#F5F0E8" />
               <ellipse cx="116" cy="126" rx="9" ry="10" fill="#F5F0E8" />
-              <ellipse cx="100" cy="68" rx="22" ry="20" fill="#FAF6F0" />
+              <ellipse cx="100" cy="68" rx="22" ry="20" fill="#FAF6F0" stroke="#D8D0C4" strokeWidth="0.5" />
               <circle cx="84" cy="52" r="7" fill="#F5F0E8" />
               <circle cx="84" cy="52" r="4.5" fill="#FFCDD2" />
               <circle cx="116" cy="52" r="7" fill="#F5F0E8" />
