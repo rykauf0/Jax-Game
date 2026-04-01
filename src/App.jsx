@@ -3,7 +3,7 @@ import TitleScreen from './components/TitleScreen';
 import GameScreen from './components/GameScreen';
 import EndScreen from './components/EndScreen';
 import { useGameState } from './hooks/useGameState';
-import { stopBgMusic } from './utils/audio';
+import { stopBgMusic, audio } from './utils/audio';
 import { BearIcon, StarIcon, CalendarIcon } from './components/Icons';
 
 function Countdown({ onDone }) {
@@ -101,6 +101,7 @@ export default function App() {
   const { state, initGame, playCard, jumpTime, dismissEvent, completeMiniGame, clearNewFriend, markCubsAnnounced } = useGameState();
 
   useEffect(() => {
+    audio.init(); // Set up audio unlock listeners early
     const played = localStorage.getItem('pg_gamesPlayed');
     if (played && parseInt(played) > 0) setIsFirstPlay(false);
   }, []);

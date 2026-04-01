@@ -1,5 +1,6 @@
 let ctx = null;
 let muted = false;
+let unlocked = false;
 
 function getCtx() {
   if (!ctx) {
@@ -9,11 +10,38 @@ function getCtx() {
       return null;
     }
   }
-  if (ctx.state === 'suspended') ctx.resume();
+  if (ctx.state === 'suspended') {
+    ctx.resume().catch(() => {});
+  }
   return ctx;
 }
 
-function playNote(freq, type, duration, volume = 0.12, delay = 0) {
+// iOS/mobile requires AudioContext to be unlocked on a user gesture.
+// We attach a one-time listener to unlock it on the very first touch/click.
+function ensureUnlocked() {
+  if (unlocked) return;
+  const unlock = () => {
+    const c = getCtx();
+    if (c) {
+      // Play a silent buffer to fully unlock the context
+      const buffer = c.createBuffer(1, 1, 22050);
+      const source = c.createBufferSource();
+      source.buffer = buffer;
+      source.connect(c.destination);
+      source.start(0);
+      if (c.state === 'suspended') c.resume().catch(() => {});
+    }
+    unlocked = true;
+    document.removeEventListener('touchstart', unlock, true);
+    document.removeEventListener('touchend', unlock, true);
+    document.removeEventListener('click', unlock, true);
+  };
+  document.addEventListener('touchstart', unlock, true);
+  document.addEventListener('touchend', unlock, true);
+  document.addEventListener('click', unlock, true);
+}
+
+function playNote(freq, type, duration, volume = 0.3, delay = 0) {
   if (muted) return;
   const c = getCtx();
   if (!c) return;
@@ -42,86 +70,86 @@ export const audio = {
   cardPlayed() {
     // Bright, happy two-note ping
     playChord([
-      [880, 'sine', 0.12, 0.1, 0],
-      [1320, 'sine', 0.1, 0.07, 0.06],
+      [880, 'sine', 0.15, 0.35, 0],
+      [1320, 'sine', 0.12, 0.25, 0.06],
     ]);
   },
 
   timeJump() {
     // Magical rising arpeggio
     playChord([
-      [523, 'sine', 0.1, 0.1, 0],
-      [659, 'sine', 0.1, 0.1, 0.07],
-      [784, 'sine', 0.1, 0.1, 0.14],
-      [1047, 'sine', 0.15, 0.12, 0.21],
+      [523, 'sine', 0.12, 0.3, 0],
+      [659, 'sine', 0.12, 0.3, 0.07],
+      [784, 'sine', 0.12, 0.3, 0.14],
+      [1047, 'sine', 0.18, 0.35, 0.21],
       // Add sparkly overtone
-      [1568, 'sine', 0.08, 0.04, 0.25],
+      [1568, 'sine', 0.1, 0.15, 0.25],
     ]);
   },
 
   goodEvent() {
     // Happy ascending chime with harmony
     playChord([
-      [659, 'triangle', 0.15, 0.1, 0],
-      [784, 'triangle', 0.15, 0.1, 0.1],
-      [1047, 'triangle', 0.2, 0.12, 0.2],
-      [1047, 'sine', 0.15, 0.05, 0.2], // harmonic shimmer
+      [659, 'triangle', 0.18, 0.3, 0],
+      [784, 'triangle', 0.18, 0.3, 0.1],
+      [1047, 'triangle', 0.22, 0.35, 0.2],
+      [1047, 'sine', 0.18, 0.15, 0.2], // harmonic shimmer
     ]);
   },
 
   badEvent() {
     // Gentle descending tone — not scary, just "oh no"
     playChord([
-      [440, 'triangle', 0.2, 0.08, 0],
-      [370, 'triangle', 0.25, 0.08, 0.12],
-      [330, 'triangle', 0.3, 0.06, 0.24],
+      [440, 'triangle', 0.22, 0.25, 0],
+      [370, 'triangle', 0.28, 0.25, 0.12],
+      [330, 'triangle', 0.32, 0.2, 0.24],
     ]);
   },
 
   miniCatch() {
     // Quick satisfying pop with overtone
     playChord([
-      [1047, 'sine', 0.06, 0.1, 0],
-      [1568, 'sine', 0.05, 0.05, 0.02],
+      [1047, 'sine', 0.08, 0.35, 0],
+      [1568, 'sine', 0.06, 0.2, 0.02],
     ]);
   },
 
   miniHazard() {
     // Short dull thud
-    playNote(200, 'triangle', 0.1, 0.08);
+    playNote(200, 'triangle', 0.12, 0.25);
   },
 
   win() {
     // Victory fanfare! Celebratory and triumphant
     playChord([
-      [523, 'sine', 0.15, 0.12, 0],
-      [523, 'triangle', 0.15, 0.06, 0],
-      [659, 'sine', 0.15, 0.12, 0.18],
-      [784, 'sine', 0.15, 0.12, 0.36],
-      [1047, 'sine', 0.3, 0.14, 0.54],
-      [1047, 'triangle', 0.25, 0.06, 0.54],
+      [523, 'sine', 0.18, 0.35, 0],
+      [523, 'triangle', 0.18, 0.18, 0],
+      [659, 'sine', 0.18, 0.35, 0.18],
+      [784, 'sine', 0.18, 0.35, 0.36],
+      [1047, 'sine', 0.35, 0.4, 0.54],
+      [1047, 'triangle', 0.28, 0.18, 0.54],
       // Sparkle at the end
-      [1568, 'sine', 0.1, 0.04, 0.7],
-      [2093, 'sine', 0.08, 0.03, 0.75],
+      [1568, 'sine', 0.12, 0.15, 0.7],
+      [2093, 'sine', 0.1, 0.1, 0.75],
     ]);
   },
 
   lose() {
     // Gentle, sad — not punishing
     playChord([
-      [330, 'triangle', 0.4, 0.08, 0],
-      [294, 'triangle', 0.5, 0.07, 0.3],
-      [262, 'triangle', 0.6, 0.06, 0.6],
+      [330, 'triangle', 0.45, 0.25, 0],
+      [294, 'triangle', 0.55, 0.22, 0.3],
+      [262, 'triangle', 0.65, 0.2, 0.6],
     ]);
   },
 
   buttonTap() {
-    playNote(660, 'sine', 0.06, 0.06);
+    playNote(660, 'sine', 0.08, 0.2);
   },
 
   setMuted(m) { muted = m; },
   isMuted() { return muted; },
-  init() { getCtx(); },
+  init() { getCtx(); ensureUnlocked(); },
 };
 
 // Background music — gentle ambient arctic soundscape
@@ -152,7 +180,7 @@ export function startBgMusic() {
         osc.type = 'sine';
         osc.frequency.value = freq;
         gain.gain.setValueAtTime(0, c.currentTime);
-        gain.gain.linearRampToValueAtTime(0.02, c.currentTime + 0.5);
+        gain.gain.linearRampToValueAtTime(0.06, c.currentTime + 0.5);
         gain.gain.linearRampToValueAtTime(0, c.currentTime + 3.5);
         osc.connect(gain);
         gain.connect(c.destination);
@@ -170,7 +198,7 @@ export function startBgMusic() {
         osc.type = 'sine';
         osc.frequency.value = note;
         gain.gain.setValueAtTime(0, c.currentTime + delay);
-        gain.gain.linearRampToValueAtTime(0.03, c.currentTime + delay + 0.1);
+        gain.gain.linearRampToValueAtTime(0.08, c.currentTime + delay + 0.1);
         gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + delay + 1);
         osc.connect(gain);
         gain.connect(c.destination);
