@@ -35,7 +35,7 @@ export default function TitleScreen({ onStart }) {
   ];
 
   return (
-    <div style={{
+    <div onClick={() => audio.init()} onTouchStart={() => audio.init()} style={{
       display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
       height: '100dvh', padding: '24px 20px', fontFamily: "'Fredoka', 'Nunito', sans-serif",
       background: 'linear-gradient(180deg, #0F172A 0%, #1E3A5F 40%, #2563EB 100%)',
